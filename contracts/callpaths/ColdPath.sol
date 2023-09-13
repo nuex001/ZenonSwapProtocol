@@ -61,7 +61,7 @@ contract ColdPath is MarketSequencer, DepositDesk, ProtocolAccount {
     /* @notice Subset of highly privileged commands that are only allowed to run in sudo
      *         mode. */
     function sudoCmd (bytes calldata cmd) internal {
-        require(sudoMode_, "Sudo");
+       require(sudoMode_, "Sudo");
         uint8 cmdCode = uint8(cmd[31]);
         
         if (cmdCode == ProtocolCmd.COLLECT_TREASURY_CODE) {
@@ -157,7 +157,7 @@ contract ColdPath is MarketSequencer, DepositDesk, ProtocolAccount {
         (, uint8 takeRate) = 
             abi.decode(input, (uint8, uint8));
         
-        emit CrocEvents.SetTakeRate(takeRate);
+        emit ZenonEvents.SetTakeRate(takeRate);
         setProtocolTakeRate(takeRate);
     }
 
@@ -165,7 +165,7 @@ contract ColdPath is MarketSequencer, DepositDesk, ProtocolAccount {
         (, uint8 takeRate) = 
             abi.decode(input, (uint8, uint8));
 
-        emit CrocEvents.SetRelayerTakeRate(takeRate);
+        emit ZenonEvents.SetRelayerTakeRate(takeRate);
         setRelayerTakeRate(takeRate);
     }
 
@@ -173,7 +173,7 @@ contract ColdPath is MarketSequencer, DepositDesk, ProtocolAccount {
         (, uint128 liq) = 
             abi.decode(input, (uint8, uint128));
         
-        emit CrocEvents.SetNewPoolLiq(liq);
+        emit ZenonEvents.SetNewPoolLiq(liq);
         setNewPoolLiq(liq);
     }
 
@@ -181,7 +181,7 @@ contract ColdPath is MarketSequencer, DepositDesk, ProtocolAccount {
         (, address base, address quote, uint256 poolIdx) = 
             abi.decode(input, (uint8, address, address, uint256));
         
-        emit CrocEvents.ResyncTakeRate(base, quote, poolIdx, protocolTakeRate_);
+        emit ZenonEvents.ResyncTakeRate(base, quote, poolIdx, protocolTakeRate_);
         resyncProtocolTake(base, quote, poolIdx);
     }
 
@@ -209,19 +209,19 @@ contract ColdPath is MarketSequencer, DepositDesk, ProtocolAccount {
     function pegPriceImprove (bytes calldata cmd) private {
         (, address token, uint128 unitTickCollateral, uint16 awayTickTol) =
             abi.decode(cmd, (uint8, address, uint128, uint16));
-        emit CrocEvents.PriceImproveThresh(token, unitTickCollateral, awayTickTol);
+        emit ZenonEvents.PriceImproveThresh(token, unitTickCollateral, awayTickTol);
         setPriceImprove(token, unitTickCollateral, awayTickTol);
     }
 
     function setHotPathOpen (bytes calldata cmd) private {
         (, bool open) = abi.decode(cmd, (uint8, bool));
-        emit CrocEvents.HotPathOpen(open);
+        emit ZenonEvents.HotPathOpen(open);
         hotPathOpen_ = open;        
     }
 
     function setSafeMode (bytes calldata cmd) private {
         (, bool inSafeMode) = abi.decode(cmd, (uint8, bool));
-        emit CrocEvents.SafeMode(inSafeMode);
+        emit ZenoonEvents.SafeMode(inSafeMode);
         inSafeMode_ = inSafeMode;        
     }
 
@@ -232,7 +232,7 @@ contract ColdPath is MarketSequencer, DepositDesk, ProtocolAccount {
         (, address token) = abi.decode(cmd, (uint8, address));
 
         require(block.timestamp >= treasuryStartTime_, "Treasury start");
-        emit CrocEvents.ProtocolDividend(token, treasury_);
+        emit ZenonEvents.ProtocolDividend(token, treasury_);
         disburseProtocolFees(treasury_, token);
     }
 
@@ -244,7 +244,7 @@ contract ColdPath is MarketSequencer, DepositDesk, ProtocolAccount {
         require(treasury != address(0) && treasury.code.length != 0, "Treasury invalid");
         treasury_ = treasury;
         treasuryStartTime_ = uint64(block.timestamp + 7 days);
-        emit CrocEvents.TreasurySet(treasury_, treasuryStartTime_);
+        emit ZenonEvents.TreasurySet(treasury_, treasuryStartTime_);
     }
 
     function transferAuthority (bytes calldata cmd) private {
@@ -252,9 +252,9 @@ contract ColdPath is MarketSequencer, DepositDesk, ProtocolAccount {
             abi.decode(cmd, (uint8, address));
 
         require(auth != address(0) && auth.code.length > 0 && 
-            ICrocMaster(auth).acceptsCrocAuthority(), "Invalid Authority");
+            IZenonMaster(auth).acceptsZenonAuthority(), "Invalid Authority");
         
-        emit CrocEvents.AuthorityTransfer(authority_);
+        emit ZenonEvents.AuthorityTransfer(authority_);
         authority_ = auth;
     }
 
@@ -332,8 +332,8 @@ contract ColdPath is MarketSequencer, DepositDesk, ProtocolAccount {
 
     /* @notice Used at upgrade time to verify that the contract is a valid Croc sidecar proxy and used
      *         in the correct slot. */
-    function acceptCrocProxyRole (address, uint16 slot) public virtual returns (bool) {
-        return slot == CrocSlots.COLD_PROXY_IDX;
+    function acceptZenonProxyRole (address, uint16 slot) public virtual returns (bool) {
+        return slot == ZenonSlots.COLD_PROXY_IDX;
     }
 }
 
