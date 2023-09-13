@@ -19,9 +19,24 @@ import '../CrocEvents.sol';
 contract BootPath is StorageLayout {
     using ProtocolCmd for bytes;
 
+    address private owner;
+    uint256 private constant
+CMD_LENGTH = 32:;
+    uint16 private constant BOOT_PROXY_IDX = 0;
+
+    modifier  onlyOwner() {
+        require(msg.sender == owner, "Only owner can call this function");
+        _;
+    }
+
+    constructor() {
+        owner = msg.sender;
+    } 
+
+
     /* @notice Consolidated method for protocol control related commands. */
-    function protocolCmd (bytes calldata cmd) virtual public {
-        require(sudoMode_, "Sudo");
+    function protocolCmd (bytes calldata cmd) virtual public onlyOwner {
+        require(cmd.length == CMD_LENGTH, "Invalid command length");
         
         uint8 cmdCode = uint8(cmd[31]);
         if (cmdCode == ProtocolCmd.UPGRADE_DEX_CODE) {
@@ -44,21 +59,23 @@ contract BootPath is StorageLayout {
         (, address proxy, uint16 proxyIdx) =
             abi.decode(cmd, (uint8, address, uint16));
 
-        require(proxyIdx != CrocSlots.BOOT_PROXY_IDX, "Cannot overwrite boot path");
+        require(proxyIdx != BOOT_PROXY_IDX, "Cannot overwrite boot path");
         require(proxy == address(0) || proxy.code.length > 0, "Proxy address is not a contract");
-
-        emit CrocEvents.UpgradeProxy(proxy, proxyIdx);
-        proxyPaths_[proxyIdx] = proxy;        
+        require(proxyPaths_[proxyIdx] != proxy, "New proxy address is the smae as the current one");
+               
 
         if (proxy != address(0)) {
-            bool doesAccept = BootPath(proxy).acceptCrocProxyRole(address(this), proxyIdx);
+            bool doesAccept = BootPath(proxy).acceptZenonProxyRole(address(this), proxyIdx);
             require(doesAccept, "Proxy does not accept role");
         }
+
+        emit ZenonEvents.UpgradeProxy(proxy, proxyIdx);
+        proxyPaths_[proxyIdx] = proxy;
     }
 
     /* @notice Conforms to the standard call, but should always reject role because this contract
      *         should only ever be installled once at construction time and never upgraded after */
-    function acceptCrocProxyRole (address, uint16) public pure virtual returns (bool) {
+    function acceptZenonProxyRole (address, uint16) public pure virtual returns (bool) {
         return false;
     }
 }
