@@ -36,6 +36,13 @@ contract HotPath is MarketSequencer, SettleLayer, ProtocolAccount {
                           uint16 poolTip, uint128 limitPrice, uint128 minOutput,
                           uint8 reserveFlags) internal
         returns (int128 baseFlow, int128 quoteFlow) {
+
+        // Input validation
+        require(base != address(0), "Invalid base address");
+        require(quote != address(0), "Invalid quote address");
+        require(qty > 0, "Quantity muust be greater than zero");
+        require(LimitPrice > 0, "LimitPrice must be greater than zero");
+
         
         PoolSpecs.PoolCursor memory pool = preparePoolCntx
             (base, quote, poolIdx, poolTip, isBuy, inBaseQty, qty);
@@ -125,8 +132,8 @@ contract HotProxy is HotPath {
 
     /* @notice Used at upgrade time to verify that the contract is a valid Croc sidecar proxy and used
      *         in the correct slot. */
-    function acceptCrocProxyRole (address, uint16 slot) public pure returns (bool) {
-        return slot == CrocSlots.SWAP_PROXY_IDX;
+    function acceptZenonProxyRole (address, uint16 slot) public pure returns (bool) {
+        return slot == ZenonSlots.SWAP_PROXY_IDX;
     }
 
 }
