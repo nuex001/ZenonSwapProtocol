@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3
+// SPDX-License-Identifier: MIT
 
 pragma solidity 0.8.19;
 
@@ -41,14 +41,14 @@ contract KnockoutFlagPath is KnockoutCounter {
         public payable returns (int128) {
         // If swap is a sell, then implies we're crossing a resting bid and vice versa
         bool bidCross = !isBuy;
-        crossKnockout(pool, bidCross, tick, feeGlobal);
+        ZenonKnockout(pool, bidCross, tick, feeGlobal);
         return 0;
     }
 
     /* @notice Used at upgrade time to verify that the contract is a valid Croc sidecar proxy and used
      *         in the correct slot. */
-    function acceptCrocProxyRole (address, uint16 slot) public pure returns (bool) {
-        return slot == CrocSlots.FLAG_CROSS_PROXY_IDX;
+    function acceptZenonProxyRole (address, uint16 slot) public pure returns (bool) {
+        return slot == ZenonSlots.FLAG_CROSS_PROXY_IDX;
     }
 
 }
