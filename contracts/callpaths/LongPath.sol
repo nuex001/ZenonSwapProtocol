@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3
+// SPDX-License-Identifier: MIT
 
 pragma solidity 0.8.19;
 
@@ -107,7 +107,7 @@ contract LongPath is MarketSequencer, SettleLayer, ProtocolAccount {
 
     /* @notice Used at upgrade time to verify that the contract is a valid Croc sidecar proxy and used
      *         in the correct slot. */
-    function acceptCrocProxyRole (address, uint16 slot) public pure returns (bool) {
+    function acceptZenonProxyRole (address, uint16 slot) public pure returns (bool) {
         return slot == CrocSlots.LONG_PROXY_IDX;
     }
 }

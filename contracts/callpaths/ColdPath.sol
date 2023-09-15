@@ -25,7 +25,7 @@ import '../CrocEvents.sol';
  * @dev    This exists as a standalone contract but will only ever contain proxy code,
  *         not state. As such it should never be called directly or externally, and should
  *         only be invoked with DELEGATECALL so that it operates on the contract state
- *         within the primary CrocSwap contract. */
+ *         within the primary ZenonFinance contract. */
 contract ColdPath is MarketSequencer, DepositDesk, ProtocolAccount {
     using SafeCast for uint128;
     using TokenFlow for TokenFlow.PairSeq;
@@ -132,7 +132,7 @@ contract ColdPath is MarketSequencer, DepositDesk, ProtocolAccount {
      *         pools from being created on this template. */
     function disableTemplate (bytes calldata input) private {
         (, uint256 poolIdx) = abi.decode(input, (uint8, uint256));
-        emit CrocEvents.DisablePoolTemplate(poolIdx);
+        emit ZenonEvents.DisablePoolTemplate(poolIdx);
         disablePoolTemplate(poolIdx);
     }
     
@@ -148,7 +148,7 @@ contract ColdPath is MarketSequencer, DepositDesk, ProtocolAccount {
          uint8 knockout, uint8 oracleFlags) =
             abi.decode(input, (uint8, uint256, uint16, uint16, uint8, uint8, uint8));
         
-        emit CrocEvents.SetPoolTemplate(poolIdx, feeRate, tickSize, jitThresh, knockout,
+        emit ZenonEvents.SetPoolTemplate(poolIdx, feeRate, tickSize, jitThresh, knockout,
                                         oracleFlags);
         setPoolTemplate(poolIdx, feeRate, tickSize, jitThresh, knockout, oracleFlags);
     }

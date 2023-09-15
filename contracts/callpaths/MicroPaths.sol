@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3
+// SPDX-License-Identifier: MIT
 
 pragma solidity 0.8.19;
 
@@ -21,7 +21,7 @@ import '../mixins/StorageLayout.sol';
  * @dev    This exists as a standalone contract but will only ever contain proxy code,
  *         not state. As such it should never be called directly or externally, and should
  *         only be invoked with DELEGATECALL so that it operates on the contract state
- *         within the primary CrocSwap contract. */
+ *         within the primary ZenonSwap contract. */
 contract MicroPaths is MarketSequencer {
 
     /* @notice Burns liquidity on a concentrated range position within a single curve.
@@ -202,10 +202,10 @@ contract MicroPaths is MarketSequencer {
         concGrowthOut = curve.concGrowth_;
     }
 
-    /* @notice Used at upgrade time to verify that the contract is a valid Croc sidecar proxy and used
+    /* @notice Used at upgrade time to verify that the contract is a valid Zenon sidecar proxy and used
      *         in the correct slot. */
-    function acceptCrocProxyRole (address, uint16 slot) public pure returns (bool) {
-        return slot == CrocSlots.MICRO_PROXY_IDX;
+    function acceptZenonProxyRole (address, uint16 slot) public pure returns (bool) {
+        return slot == ZenonSlots.MICRO_PROXY_IDX;
     }
 }
 

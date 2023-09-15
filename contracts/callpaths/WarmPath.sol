@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3
+// SPDX-License-Identifier: MIT 
 
 pragma solidity 0.8.19;
 
@@ -29,7 +29,7 @@ import '../mixins/ProtocolAccount.sol';
  * @dev    This exists as a standalone contract but will only ever contain proxy code,
  *         not state. As such it should never be called directly or externally, and should
  *         only be invoked with DELEGATECALL so that it operates on the contract state
- *         within the primary CrocSwap contract. */
+ *         within the primary Zenonswap contract. */
 contract WarmPath is MarketSequencer, SettleLayer, ProtocolAccount {
 
     using SafeCast for uint128;
@@ -292,9 +292,9 @@ contract WarmPath is MarketSequencer, SettleLayer, ProtocolAccount {
                     liq, lpConduit, limitLower, limitHigher);
     }
     
-    /* @notice Used at upgrade time to verify that the contract is a valid Croc sidecar proxy and used
+    /* @notice Used at upgrade time to verify that the contract is a valid Zenon sidecar proxy and used
      *         in the correct slot. */
-    function acceptCrocProxyRole (address, uint16 slot) public pure returns (bool) {
-        return slot == CrocSlots.LP_PROXY_IDX;
+    function acceptZenonProxyRole (address, uint16 slot) public pure returns (bool) {
+        return slot == ZenonSlots.LP_PROXY_IDX;
     }
 }
