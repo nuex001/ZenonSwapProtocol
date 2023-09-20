@@ -1,12 +1,12 @@
-// SPDX-License-Identifier: GPL-3 
+// SPDX-License-Identifier: MIT
 
 pragma solidity 0.8.19;
 
-/* @title Croc conditional oracle interface
+/* @title Zenon conditional oracle interface
  * @notice Defines a generalized interface for checking an arbitrary condition. Used in
  *         an off-chain relayer context. User can gate specific order on a runtime 
  *         condition by calling to the oracle. */
-interface ICrocNonceOracle {
+interface IZenonNonceOracle {
 
     /* @notice Oracle function that tests a condition.
      *
@@ -18,12 +18,12 @@ interface ICrocNonceOracle {
      *              executes some desired action.
      * @param args Arbitrary args supplied to oracle check call.
      *
-     * @return True if the condition is met. If false, CrocSwap will revert the 
+     * @return True if the condition is met. If false, ZenonSwap will revert the 
      *         transaction, and the nonce will not be reset. */
-    function checkCrocNonceSet (address user, bytes32 nonceSalt, uint32 nonce,
+    function checkZenonNonceSet (address user, bytes32 nonceSalt, uint32 nonce,
                                 bytes calldata args) external returns (bool);
 }
 
-interface ICrocCondOracle {
-    function checkCrocCond (address user, bytes calldata args) external returns (bool);
+interface IZenonCondOracle {
+    function checkZenonCond (address user, bytes calldata args) external returns (bool);
 }
