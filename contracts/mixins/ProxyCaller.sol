@@ -8,7 +8,7 @@ import '../libraries/Chaining.sol';
 import '../libraries/Directives.sol';
 
 /* @title Proxy Caller
- * @notice Because of the Ethereum contract limit, much of the CrocSwap code is pushed
+ * @notice Because of the Ethereum contract limit, much of the ZenonSwap code is pushed
  *         into sidecar proxy contracts, which is involed with DELEGATECALLs. The code
  *         moved to these sidecars is less gas critical than the code in the core contract. 
  *         This provides a facility for invoking proxy conjtracts in a consistent way by
@@ -46,7 +46,7 @@ contract ProxyCaller is StorageLayout {
 
     function assertProxy (uint16 proxyIdx) private view {
         require(proxyPaths_[proxyIdx] != address(0));
-        require(!inSafeMode_ || proxyIdx == CrocSlots.SAFE_MODE_PROXY_PATH || proxyIdx == CrocSlots.BOOT_PROXY_IDX);
+        require(!inSafeMode_ || proxyIdx == ZenonSlots.SAFE_MODE_PROXY_PATH || proxyIdx == ZenonSlots.BOOT_PROXY_IDX);
     }
 
     function verifyCallResult (bool success, bytes memory returndata) internal pure returns (bytes memory) {
@@ -70,7 +70,7 @@ contract ProxyCaller is StorageLayout {
                               bytes32 poolHash) internal
         returns (int128 basePaid, int128 quotePaid) {
         (bool success, bytes memory output) =
-            proxyPaths_[CrocSlots.MICRO_PROXY_IDX].delegatecall
+            proxyPaths_[ZenonSlots.MICRO_PROXY_IDX].delegatecall
             (abi.encodeWithSignature
              ("mintAmbient(uint128,uint128,uint128,uint64,uint64,uint128,bytes32)",
               curve.curve_.priceRoot_, 
@@ -92,7 +92,7 @@ contract ProxyCaller is StorageLayout {
         returns (int128 basePaid, int128 quotePaid) {
 
         (bool success, bytes memory output) =
-            proxyPaths_[CrocSlots.MICRO_PROXY_IDX].delegatecall
+            proxyPaths_[ZenonSlots.MICRO_PROXY_IDX].delegatecall
             (abi.encodeWithSignature
              ("burnAmbient(uint128,uint128,uint128,uint64,uint64,uint128,bytes32)",
               curve.curve_.priceRoot_, 
@@ -115,7 +115,7 @@ contract ProxyCaller is StorageLayout {
         returns (int128 basePaid, int128 quotePaid) {
 
         (bool success, bytes memory output) =
-            proxyPaths_[CrocSlots.MICRO_PROXY_IDX].delegatecall
+            proxyPaths_[ZenonSlots.MICRO_PROXY_IDX].delegatecall
             (abi.encodeWithSignature
              ("mintRange(uint128,int24,uint128,uint128,uint64,uint64,int24,int24,uint128,bytes32)",
               curve.curve_.priceRoot_, curve.pullPriceTick(),
@@ -139,7 +139,7 @@ contract ProxyCaller is StorageLayout {
         returns (int128 basePaid, int128 quotePaid) {
         
         (bool success, bytes memory output) =
-            proxyPaths_[CrocSlots.MICRO_PROXY_IDX].delegatecall
+            proxyPaths_[ZenonSlots.MICRO_PROXY_IDX].delegatecall
             (abi.encodeWithSignature
              ("burnRange(uint128,int24,uint128,uint128,uint64,uint64,int24,int24,uint128,bytes32)",
               curve.curve_.priceRoot_, curve.pullPriceTick(),
@@ -160,7 +160,7 @@ contract ProxyCaller is StorageLayout {
                        Directives.SwapDirective memory swap,
                        PoolSpecs.PoolCursor memory pool) internal {
         (bool success, bytes memory output) =
-            proxyPaths_[CrocSlots.MICRO_PROXY_IDX].delegatecall
+            proxyPaths_[ZenonSlots.MICRO_PROXY_IDX].delegatecall
             (abi.encodeWithSignature
              ("sweepSwap((uint128,uint128,uint128,uint64,uint64),int24,(bool,bool,uint8,uint128,uint128),((uint8,uint16,uint8,uint16,uint8,uint8,uint8),bytes32,address))",
               curve.curve_, curve.pullPriceTick(), swap, pool));
@@ -184,10 +184,10 @@ contract ProxyCaller is StorageLayout {
     function callCrossFlag (bytes32 poolHash, int24 tick,
                             bool isBuy, uint64 feeGlobal)
         internal returns (int128 concLiqDelta) {
-        require(proxyPaths_[CrocSlots.FLAG_CROSS_PROXY_IDX] != address(0));
+        require(proxyPaths_[ZenonSlots.FLAG_CROSS_PROXY_IDX] != address(0));
         
         (bool success, bytes memory cmd) =
-            proxyPaths_[CrocSlots.FLAG_CROSS_PROXY_IDX].delegatecall
+            proxyPaths_[ZenonSlots.FLAG_CROSS_PROXY_IDX].delegatecall
             (abi.encodeWithSignature
              ("crossCurveFlag(bytes32,int24,bool,uint64)",
               poolHash, tick, isBuy, feeGlobal));

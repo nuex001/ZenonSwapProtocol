@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3                                                          
+// SPDX-License-Identifier: MIT                                                         
 pragma solidity 0.8.19;
 pragma experimental ABIEncoderV2;
 
@@ -10,7 +10,7 @@ import '../libraries/KnockoutLiq.sol';
 /* @title Storage layout base layer
  * 
  * @notice Only exists to enforce a single consistent storage layout. Not
- *    designed to be externally used. All storage in any CrocSwap contract
+ *    designed to be externally used. All storage in any ZenonSwap contract
  *    is defined here. That allows easy use of delegatecall() to move code
  *    over the 24kb into proxy contracts.
  *
@@ -155,10 +155,10 @@ contract StorageLayout {
  *
  * @dev Note that if the struct of StorageLayer changes, these slot locations *will*
  *      change, and the values below will have to be manually updated. */
-library CrocSlots {
+library ZenonSlots {
 
     // Slot location of storage slots and/or hash map storage slot offsets. Values below
-    // can be used to directly read state in CrocSwapDex by other contracts.
+    // can be used to directly read state in ZenonSwapDex by other contracts.
     uint constant public AUTHORITY_SLOT = 0;
     uint constant public LVL_MAP_SLOT = 65538;
     uint constant public KO_PIVOT_SLOT = 65539;

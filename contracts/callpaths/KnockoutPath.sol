@@ -24,7 +24,7 @@ contract KnockoutFlagPath is KnockoutCounter {
      * @dev Since this contract is a proxy sidecar, this method needs to be marked
      *      payable even though it doesn't directly handle msg.value. Otherwise it will
      *      fail on any. Because of this, this contract should never be used in any other
-     *      context besides a proxy sidecar to CrocSwapDex.
+     *      context besides a proxy sidecar to ZenonSwapDex.
      *
      * @param pool The hash index of the pool.
      * @param tick The 24-bit index of the tick where the knockout pivot exists.
@@ -45,7 +45,7 @@ contract KnockoutFlagPath is KnockoutCounter {
         return 0;
     }
 
-    /* @notice Used at upgrade time to verify that the contract is a valid Croc sidecar proxy and used
+    /* @notice Used at upgrade time to verify that the contract is a valid Zenon sidecar proxy and used
      *         in the correct slot. */
     function acceptZenonProxyRole (address, uint16 slot) public pure returns (bool) {
         return slot == ZenonSlots.FLAG_CROSS_PROXY_IDX;
@@ -167,7 +167,7 @@ contract KnockoutLiqPath is TradeMatcher, SettleLayer {
         (uint160 root, uint256[] memory proof) = abi.decode(args, (uint160,uint256[]));
 
         // No permit check because permit oracles do not control knockout claims
-        // (See ICrocPermitOracle for more information)
+        // (See IZenonPermitOracle for more information)
         (baseFlow, quoteFlow) = claimKnockout(curve, loc, root, proof, pool);
         commitCurve(pool, curve);
     }
@@ -189,16 +189,16 @@ contract KnockoutLiqPath is TradeMatcher, SettleLayer {
         (uint32 pivotTime) = abi.decode(args, (uint32));
         
         // No permit check because permit oracles do not control knockout claims
-        // (See ICrocPermitOracle for more information)
+        // (See IZenonPermitOracle for more information)
 
         (baseFlow, quoteFlow) = recoverKnockout(loc, pivotTime, pool);
         // No need to commit curve because recover doesn't touch curve.
     }
 
-    /* @notice Used at upgrade time to verify that the contract is a valid Croc sidecar proxy and used
+    /* @notice Used at upgrade time to verify that the contract is a valid Zenon sidecar proxy and used
      *         in the correct slot. */
-    function acceptCrocProxyRole (address, uint16 slot) public pure returns (bool) {
-        return slot == CrocSlots.KNOCKOUT_LP_PROXY_IDX;
+    function acceptZenonProxyRole (address, uint16 slot) public pure returns (bool) {
+        return slot == ZenonSlots.KNOCKOUT_LP_PROXY_IDX;
     }
 
 }

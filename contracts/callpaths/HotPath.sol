@@ -130,7 +130,7 @@ contract HotProxy is HotPath {
         return swapEncoded(input);
     }
 
-    /* @notice Used at upgrade time to verify that the contract is a valid Croc sidecar proxy and used
+    /* @notice Used at upgrade time to verify that the contract is a valid Zenon sidecar proxy and used
      *         in the correct slot. */
     function acceptZenonProxyRole (address, uint16 slot) public pure returns (bool) {
         return slot == ZenonSlots.SWAP_PROXY_IDX;

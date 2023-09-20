@@ -52,7 +52,7 @@ contract TradeMatcher is PositionRegistrar, LiquidityCurve, KnockoutCounter,
      *                 sqrt(X*Y) where X,Y are the collateral reserves in a constant-
      *                 product AMM
      * @param poolHash The hash indexing the pool this liquidity curve applies to.
-     * @param lpOwner The address of the ICrocLpConduit the LP position will be 
+     * @param lpOwner The address of the IZenonLpConduit the LP position will be 
      *                assigned to. (If zero the user will directly own the LP.)
      *
      * @return baseFlow The amount of base-side token collateral required by this
@@ -116,7 +116,7 @@ contract TradeMatcher is PositionRegistrar, LiquidityCurve, KnockoutCounter,
      *                 sqrt(X*Y) where X,Y are the collateral reserves in a constant-
      *                 product AMM
      * @param poolHash The hash indexing the pool this liquidity curve applies to.
-     * @param lpConduit The address of the ICrocLpConduit the LP position will be 
+     * @param lpConduit The address of the IZenonLpConduit the LP position will be 
      *                  assigned to. (If zero the user will directly own the LP.)
      *
      * @return baseFlow The amount of base-side token collateral required by this
@@ -175,7 +175,7 @@ contract TradeMatcher is PositionRegistrar, LiquidityCurve, KnockoutCounter,
         return signBurnFlow(base, quote);
     }
 
-    /* @notice Dispatches the call to the ICrocLpConduit with the ambient liquidity 
+    /* @notice Dispatches the call to the IZenonLpConduit with the ambient liquidity 
      *         LP position that was minted. */
     function depositConduit (bytes32 poolHash, uint128 liqSeeds, uint64 deflator,
                              address lpConduit) private {
@@ -187,13 +187,13 @@ contract TradeMatcher is PositionRegistrar, LiquidityCurve, KnockoutCounter,
         depositConduit(poolHash, NA_LOW_TICK, NA_HIGH_TICK, liqSeeds, deflator, lpConduit);
     }
 
-    /* @notice Dispatches the call to the ICrocLpConduit with the concentrated liquidity 
+    /* @notice Dispatches the call to the IZenonLpConduit with the concentrated liquidity 
      *         LP position that was minted. */
     function depositConduit (bytes32 poolHash, int24 lowTick, int24 highTick,
                              uint128 liq, uint64 mileage, address lpConduit) private {
         if (lpConduit != lockHolder_) {
-            bool doesAccept = ICrocLpConduit(lpConduit).
-                depositCrocLiq(lockHolder_, poolHash, lowTick, highTick, liq, mileage);
+            bool doesAccept = IZenonLpConduit(lpConduit).
+                depositZenonLiq(lockHolder_, poolHash, lowTick, highTick, liq, mileage);
             require(doesAccept, "LP");
         }
     }
@@ -210,8 +210,8 @@ contract TradeMatcher is PositionRegistrar, LiquidityCurve, KnockoutCounter,
     function withdrawConduit (bytes32 poolHash, int24 lowTick, int24 highTick,
                               uint128 liq, uint64 mileage, address lpConduit) private {
         if (lpConduit != lockHolder_) {
-            bool doesAccept = ICrocLpConduit(lpConduit).
-                withdrawCrocLiq(lockHolder_, poolHash, lowTick, highTick, liq, mileage);
+            bool doesAccept = IZenonLpConduit(lpConduit).
+                withdrawZenonLiq(lockHolder_, poolHash, lowTick, highTick, liq, mileage);
             require(doesAccept, "LP");
         }
     }

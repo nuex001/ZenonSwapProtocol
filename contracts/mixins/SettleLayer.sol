@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3                                                          
+// SPDX-License-Identifier: MIT                                                        
 pragma solidity 0.8.19;
 pragma experimental ABIEncoderV2;
 
@@ -24,10 +24,10 @@ contract SettleLayer is AgentMask {
      * @dev    This method settles any net Ether debits or credits in the ethFlows
      *         argument, by consuming the native ETH attached in msg.value, using
      *         popMsgVal(). popMsgVal() sets a transaction level flag, and to prevent
-     *         double spent will revert and fail the top level CrocSwapDex contract
+     *         double spent will revert and fail the top level ZenonSwapDex contract
      *         call if ever called twice in the same transction. Therefore this method
      *         must only be called at most once per transaction, otherwise the top-level
-     *         CrocSwapDex contract call will revert and fail.  
+     *         ZenonSwapDex contract call will revert and fail.  
      *
      * @param flow The net flow for this settlement leg. Negative for credits paid to
      *             user, positive for debits.
@@ -376,7 +376,7 @@ contract SettleLayer is AgentMask {
 
     /* @notice Collects a token debt from a specfic debtor.
      * @dev    Note that this function does *not* assert that the post-transfer balance
-     *         is correct. CrocSwap is not safe to use for any fee-on-transfer tokens
+     *         is correct. ZenonSwap is not safe to use for any fee-on-transfer tokens
      *         or any other tokens that break ERC20 transfer functionality.
      *
      * @param recv The address of the debtor being collected from.
@@ -419,7 +419,7 @@ contract SettleLayer is AgentMask {
     }
 
     /* @notice If true, determines that the settlement flow should be ignored because
-     *         it's economically meaningless and not worth transacting. */
+     *         it's economiscally meaningless and not worth transacting. */
     function moreThanDust (int128 flow, uint128 dustThresh)
         private pure returns (bool) {
         if (isDebit(flow)) {

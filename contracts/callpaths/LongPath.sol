@@ -20,7 +20,7 @@ import '../mixins/StorageLayout.sol';
  * @dev    This exists as a standalone contract but will only ever contain proxy code,
  *         not state. As such it should never be called directly or externally, and should
  *         only be invoked with DELEGATECALL so that it operates on the contract state
- *         within the primary CrocSwap contract. */
+ *         within the primary ZenonSwap contract. */
 contract LongPath is MarketSequencer, SettleLayer, ProtocolAccount {
     
     using SafeCast for uint128;
@@ -105,9 +105,9 @@ contract LongPath is MarketSequencer, SettleLayer, ProtocolAccount {
         }
     }
 
-    /* @notice Used at upgrade time to verify that the contract is a valid Croc sidecar proxy and used
+    /* @notice Used at upgrade time to verify that the contract is a valid Zenon sidecar proxy and used
      *         in the correct slot. */
     function acceptZenonProxyRole (address, uint16 slot) public pure returns (bool) {
-        return slot == CrocSlots.LONG_PROXY_IDX;
+        return slot == ZenonSlots.LONG_PROXY_IDX;
     }
 }

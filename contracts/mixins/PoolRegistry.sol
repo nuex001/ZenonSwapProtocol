@@ -5,7 +5,7 @@ pragma solidity 0.8.19;
 import '../libraries/Directives.sol';
 import '../libraries/PoolSpecs.sol';
 import '../libraries/PriceGrid.sol';
-import '../interfaces/ICrocPermitOracle.sol';
+import '../interfaces/IZenonPermitOracle.sol';
 import './StorageLayout.sol';
 
 /* @title Pool registry mixin
@@ -28,8 +28,8 @@ contract PoolRegistry is StorageLayout {
                                bool isBuy, bool inBaseQty, uint128 qty) internal {
         if (pool.oracle_ != address(0)) {
             uint16 discount =
-                ICrocPermitOracle(pool.oracle_)
-                .checkApprovedForCrocSwap(lockHolder_, msg.sender, base, quote,
+                IZenonPermitOracle(pool.oracle_)
+                .checkApprovedForZenonSwap(lockHolder_, msg.sender, base, quote,
                                           isBuy, inBaseQty, qty, pool.head_.feeRate_);
             applyDiscount(pool, discount);
         }
@@ -42,8 +42,8 @@ contract PoolRegistry is StorageLayout {
                                address base, address quote,
                                int24 bidTick, int24 askTick, uint128 liq) internal {
         if (pool.oracle_ != address(0)) {
-            bool approved = ICrocPermitOracle(pool.oracle_)
-                .checkApprovedForCrocMint(lockHolder_, msg.sender, base, quote,
+            bool approved = IZenonPermitOracle(pool.oracle_)
+                .checkApprovedForZenonMint(lockHolder_, msg.sender, base, quote,
                                           bidTick, askTick, liq);
             require(approved, "Z");
         }
@@ -56,8 +56,8 @@ contract PoolRegistry is StorageLayout {
                                address base, address quote,
                                int24 bidTick, int24 askTick, uint128 liq) internal {
         if (pool.oracle_ != address(0)) {
-            bool approved = ICrocPermitOracle(pool.oracle_)
-                .checkApprovedForCrocBurn(lockHolder_, msg.sender, base, quote,
+            bool approved = IZenonPermitOracle(pool.oracle_)
+                .checkApprovedForZenonBurn(lockHolder_, msg.sender, base, quote,
                                           bidTick, askTick, liq);
             require(approved, "Z");
         }
@@ -72,8 +72,8 @@ contract PoolRegistry is StorageLayout {
                            Directives.SwapDirective memory swap,
                            Directives.ConcentratedDirective[] memory concs) internal {
         if (pool.oracle_ != address(0)) {
-            uint16 discount = ICrocPermitOracle(pool.oracle_)
-                .checkApprovedForCrocPool(lockHolder_, msg.sender, base, quote, ambient,
+            uint16 discount = IZenonPermitOracle(pool.oracle_)
+                .checkApprovedForZenonPool(lockHolder_, msg.sender, base, quote, ambient,
                                           swap, concs, pool.head_.feeRate_);
             applyDiscount(pool, discount);
         }
@@ -93,8 +93,8 @@ contract PoolRegistry is StorageLayout {
     function verifyPermitInit (PoolSpecs.PoolCursor memory pool,
                                address base, address quote, uint256 poolIdx) internal {
         if (pool.oracle_ != address(0)) {
-            bool approved = ICrocPermitOracle(pool.oracle_).
-                checkApprovedForCrocInit(lockHolder_, msg.sender, base, quote, poolIdx);
+            bool approved = IZenonPermitOracle(pool.oracle_).
+                checkApprovedForZenonInit(lockHolder_, msg.sender, base, quote, poolIdx);
             require(approved, "Z");
         }
     }
@@ -135,7 +135,7 @@ contract PoolRegistry is StorageLayout {
         // valid oracle contract
         address oracle = PoolSpecs.oracleForPool(poolIdx, oracleFlags);
         if (oracle != address(0)) {
-            require(oracle.code.length > 0 && ICrocPermitOracle(oracle).acceptsPermitOracle(),
+            require(oracle.code.length > 0 && IZenonPermitOracle(oracle).acceptsPermitOracle(),
                 "Oracle");    
         }
     }

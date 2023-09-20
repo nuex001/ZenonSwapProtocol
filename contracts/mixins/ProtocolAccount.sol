@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3
+// SPDX-License-Identifier: MIT
 
 pragma solidity 0.8.19;
 
@@ -9,7 +9,7 @@ import './StorageLayout.sol';
 
 /* @title Protocol Account Mixin
  * @notice Tracks and pays out the accumulated protocol fees across the entire exchange 
- *         These are the fees belonging to the CrocSwap protocol, not the liquidity 
+ *         These are the fees belonging to the ZenonSwap protocol, not the liquidity 
  *         miners.
  * @dev Unlike liquidity fees, protocol fees are accumulated as resting tokens 
  *      instead of ambient liquidity. */
