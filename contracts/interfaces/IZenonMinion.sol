@@ -7,7 +7,7 @@ import '../libraries/CurveCache.sol';
 /* @notice Simple interface that define the surface between the ZenonSwapDex
  *         itself and protocol governance and policy. All governance actions are
  *         are executed through the single protocolCmd() method. */
-interface ICrocMinion {
+interface IZenonMinion {
 
     /* @notice Calls a general governance authorized command on the ZenonSwapDex contract.
      *
@@ -24,8 +24,8 @@ interface ICrocMinion {
 }
 
 /* @notice Interface for a contract that directly governs a ZenonSwap dex contract. */
-interface ICrocMaster {
+interface IZenonMaster {
     /* @notice Used to validate governance contract to prevent authority transfer to an
      *         an invalid address or contract. */
-    function acceptsCrocAuthority() external returns (bool);
+    function acceptsZenonAuthority() external returns (bool);
 }

@@ -7,8 +7,8 @@ import { solidity } from "ethereum-waffle";
 import chai from "chai";
 import { MockERC20 } from '../typechain/MockERC20';
 import { BigNumber, Wallet, Signer, BytesLike, ContractFactory } from 'ethers';
-import { CrocPolicy } from '../typechain/CrocPolicy';
-import { CrocSwapDex } from '../typechain/CrocSwapDex';
+import { ZenonPolicy } from '../typechain/ZenonPolicy';
+import { ZenonSwapDex } from '../typechain/ZenonSwapDex';
 import { BootPath, ColdPath, MockMaster, MockTimelock } from '../typechain';
 
 const hre = require("hardhat");
@@ -20,8 +20,8 @@ describe('Pool Governance', () => {
     let quoteToken: Token
     let sender: string
     let other: string
-    let policy: CrocPolicy
-    let policy2: CrocPolicy
+    let policy: ZenonPolicy
+    let policy2: ZenonPolicy
     let accts: Wallet[]
     let ops: MockTimelock
     let ops2: MockTimelock
@@ -29,7 +29,7 @@ describe('Pool Governance', () => {
     let treasury2: MockTimelock
     let emergency: MockTimelock
     let emergency2: MockTimelock
-    let pool: CrocSwapDex
+    let pool: ZenonSwapDex
     const feeRate = 225 * 100
 
     beforeEach("deploy",  async () => {
@@ -43,9 +43,9 @@ describe('Pool Governance', () => {
 
       accts = (await (ethers.getSigners() as Promise<Signer[]>)) as unknown as Wallet[]
 
-      let factory = await ethers.getContractFactory("CrocPolicy");
-      policy = (await factory.deploy((await test.dex).address)) as CrocPolicy;
-      policy2 = (await factory.deploy((await test.dex).address)) as CrocPolicy;
+      let factory = await ethers.getContractFactory("ZenonPolicy");
+      policy = (await factory.deploy((await test.dex).address)) as ZenonPolicy;
+      policy2 = (await factory.deploy((await test.dex).address)) as ZenonPolicy;
       pool = await test.dex
 
       factory = await ethers.getContractFactory("MockTimelock");

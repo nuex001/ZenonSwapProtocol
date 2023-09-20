@@ -8,9 +8,9 @@ Concentrated liquidity is highly capital efficient, especially for very narrow r
 
 Since the JIT attacker immediately removes the position immediately following the swap, the attacker has no risk and exactly knows its exact position before and after the swap. By contrast the passive liquidity providers in the pool, who do take meaningful *impermanent loss* (IL) risk have their accumulated rewards diluted by the JIT attacker.
 
-## CrocSwap Mitigation
+## ZenonSwap Mitigation
 
-CrocSwap mitigates the risk of JIT by having a per-pool parameter set by governance that specifies a minimum TTL for every concentrated liquidity position in the pool. This value can be set anywhere between 0 and 2550 seconds, as measured by block time. 
+ZenonSwap mitigates the risk of JIT by having a per-pool parameter set by governance that specifies a minimum TTL for every concentrated liquidity position in the pool. This value can be set anywhere between 0 and 2550 seconds, as measured by block time. 
 
 Since every transaction in a classical JIT sandwich occurs in the same block, and therefore the same block time, this becomes impossible if the TTL parameter is set to any value greater than zero. 
 
@@ -28,7 +28,7 @@ The upper boundary of the TTL parameter (2550 seconds) represents over 200 seque
 
 An *open-faced JIT sandwich* occurs when the attacker still colludes with the block builder to mint a large fraction of the pool’s active liquidity immediately before the target swap, but doesn’t include the removal. 
 
-In the case of CrocSwap open-faced JIT sandwiches are still possible, but the attacker must wait a minimum of TTL time before removing their order. In this case the attacker still has an economic advantage over the passive liquidity providers in the pool, because they’re timing their position to coincide with a fee accumulation event. So attacks of this type may still be attractive.
+In the case of ZenonSwap open-faced JIT sandwiches are still possible, but the attacker must wait a minimum of TTL time before removing their order. In this case the attacker still has an economic advantage over the passive liquidity providers in the pool, because they’re timing their position to coincide with a fee accumulation event. So attacks of this type may still be attractive.
 
 However the attacker is at a distinct economic disadvantage relative to a classical JIT sandwich. First, the attacker must tie up capital. Instead of a single block, capital remains locked in the position for the TTL lifetime. Second, unlike a classical JIT sandwich, the attacker does take meaningful economic risk because the liquidity remains active for the TTL lifetime. 
 

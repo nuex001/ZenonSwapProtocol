@@ -2,8 +2,8 @@
 
 pragma solidity 0.8.19;
 
-/* @title Empty implementation of CrocSwap interface */
-contract CrocShell {
+/* @title Empty implementation of ZenonSwap interface */
+contract ZenonShell {
 
     function swap (address base, address quote,
                    uint256 poolIdx, bool isBuy, bool inBaseQty, uint128 qty, uint16 tip,

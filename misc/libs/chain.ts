@@ -2,8 +2,8 @@ import { JsonRpcProvider, Provider, TransactionReceipt, TransactionResponse } fr
 import { BigNumber, BytesLike, Contract, ContractTransaction, Signer, Wallet } from "ethers";
 import { ethers } from "hardhat"
 import { TimelockAccepts } from "../../typechain";
-import { CrocAddrs, CROC_ADDRS } from "../constants/addrs";
-import { CrocCrossPoolParams, CrocPoolParams, CROC_POOL_PARAMS } from "../constants/poolParams";
+import { ZenonAddrs, Zenon_ADDRS } from "../constants/addrs";
+import { ZenonCrossPoolParams, ZenonPoolParams, Zenon_POOL_PARAMS } from "../constants/poolParams";
 import { RPC_URLS } from "../constants/rpcs";
 
 export async function traceContractDeploy 
@@ -58,12 +58,12 @@ export async function refContract (contractName: string, addr: string,
 }
 
 export function initChain (chainId?: string): 
-    { wallet: Wallet, addrs: CrocAddrs, chainId: string, poolParams: CrocPoolParams } {
+    { wallet: Wallet, addrs: ZenonAddrs, chainId: string, poolParams: ZenonPoolParams } {
 
     chainId = chainId || process.env.CHAIN_ID || 'mock';
-    const addrs = CROC_ADDRS[chainId as keyof typeof CROC_ADDRS]
+    const addrs = Zenon_ADDRS[chainId as keyof typeof Zenon_ADDRS]
     const rpcUrl = RPC_URLS[chainId as keyof typeof RPC_URLS]
-    const poolParams = CROC_POOL_PARAMS[chainId as keyof typeof CROC_POOL_PARAMS]
+    const poolParams = Zenon_POOL_PARAMS[chainId as keyof typeof Zenon_POOL_PARAMS]
 
     const provider = new JsonRpcProvider(rpcUrl)
     const key = process.env.WALLET_KEY as string
@@ -73,12 +73,12 @@ export function initChain (chainId?: string):
 }
 
 export function initProvider (chainId?: string): 
-    { addrs: CrocAddrs, provider: Provider, chainId: string, poolParams: CrocPoolParams } {
+    { addrs: ZenonAddrs, provider: Provider, chainId: string, poolParams: ZenonPoolParams } {
 
     chainId = chainId || process.env.CHAIN_ID || 'mock';
-    const addrs = CROC_ADDRS[chainId as keyof typeof CROC_ADDRS]
+    const addrs = Zenon_ADDRS[chainId as keyof typeof Zenon_ADDRS]
     const rpcUrl = RPC_URLS[chainId as keyof typeof RPC_URLS]
-    const poolParams = CROC_POOL_PARAMS[chainId as keyof typeof CROC_POOL_PARAMS]
+    const poolParams = Zenon_POOL_PARAMS[chainId as keyof typeof Zenon_POOL_PARAMS]
 
     const provider = new JsonRpcProvider(rpcUrl)
 

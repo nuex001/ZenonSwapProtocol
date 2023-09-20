@@ -1,8 +1,8 @@
 # Liquidity Lots - Internal Representation
 
-For all end-user facing interfaces CrocSwap represents both ambient and concentrated liquidity magnitudes in terms of $\sqrt{B*Q}$ where B and Q are the virtual reserves in terms of base and quote tokens for the curve, or LP position. Liquidity is always represented as a `uint128` type both internally and externally. 
+For all end-user facing interfaces ZenonSwap represents both ambient and concentrated liquidity magnitudes in terms of $\sqrt{B*Q}$ where B and Q are the virtual reserves in terms of base and quote tokens for the curve, or LP position. Liquidity is always represented as a `uint128` type both internally and externally. 
 
-Internally however, CrocSwap stores a truncated representation for concentrated liquidity in the context of individual ticks and liquidity positions. (Full precision `uint128` liquidity is still used for aggregate concentrated liquidity on any given curve.) This representation truncates the least significant 10 digits and the most significant 22 digits from the standard `uint128` liquidity representation.
+Internally however, ZenonSwap stores a truncated representation for concentrated liquidity in the context of individual ticks and liquidity positions. (Full precision `uint128` liquidity is still used for aggregate concentrated liquidity on any given curve.) This representation truncates the least significant 10 digits and the most significant 22 digits from the standard `uint128` liquidity representation.
 
 ![Liquidity Bits-3.jpeg](./assets/Liquidity_Bits-3.jpeg)
 

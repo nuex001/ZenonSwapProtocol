@@ -30,7 +30,7 @@ contract MockLpConduit is IZenonLpConduit {
         return poolSnap_ == PoolSpecs.encodeKey(base, quote, poolIdx);
     }
 
-    function depositCZenonLiq (address sender, bytes32 poolHash,
+    function depositZenonLiq (address sender, bytes32 poolHash,
                              int24 lowerTick, int24 upperTick, uint128 liq,
                              uint64 mileage) public override returns (bool) {
         isDeposit_ = true;

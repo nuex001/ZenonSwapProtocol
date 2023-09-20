@@ -13,8 +13,8 @@ import '../mixins/MarketSequencer.sol';
 import '../mixins/StorageLayout.sol';
 import '../mixins/ProtocolAccount.sol';
 import '../mixins/DepositDesk.sol';
-import '../interfaces/ICrocMinion.sol';
-import '../CrocEvents.sol';
+import '../interfaces/IZenonMinion.sol';
+import '../ZenonEvents.sol';
 
 /* @title Cold path callpath sidecar.
  * @notice Defines a proxy sidecar contract that's used to move code outside the 
@@ -221,7 +221,7 @@ contract ColdPath is MarketSequencer, DepositDesk, ProtocolAccount {
 
     function setSafeMode (bytes calldata cmd) private {
         (, bool inSafeMode) = abi.decode(cmd, (uint8, bool));
-        emit ZenoonEvents.SafeMode(inSafeMode);
+        emit ZenonEvents.SafeMode(inSafeMode);
         inSafeMode_ = inSafeMode;        
     }
 
@@ -325,12 +325,12 @@ contract ColdPath is MarketSequencer, DepositDesk, ProtocolAccount {
             abi.decode(cmd, (uint8, address, uint32, uint16[]));
 
         for (uint i = 0; i < callpaths.length; ++i) {
-            require(callpaths[i] != CrocSlots.COLD_PROXY_IDX, "Invalid Router Approve");
+            require(callpaths[i] != ZenonSlots.COLD_PROXY_IDX, "Invalid Router Approve");
             approveAgent(router, nCalls, callpaths[i]);
         }
     }
 
-    /* @notice Used at upgrade time to verify that the contract is a valid Croc sidecar proxy and used
+    /* @notice Used at upgrade time to verify that the contract is a valid Zenon sidecar proxy and used
      *         in the correct slot. */
     function acceptZenonProxyRole (address, uint16 slot) public virtual returns (bool) {
         return slot == ZenonSlots.COLD_PROXY_IDX;

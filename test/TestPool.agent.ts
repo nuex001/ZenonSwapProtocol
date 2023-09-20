@@ -6,7 +6,7 @@ import { toSqrtPrice, fromSqrtPrice, maxSqrtPrice, minSqrtPrice, ZERO_ADDR } fro
 import { solidity } from "ethereum-waffle";
 import chai from "chai";
 import { MockERC20 } from '../typechain/MockERC20';
-import { MockCrocNonceOracle } from '../typechain/MockCrocNonceOracle';
+import { MockZenonNonceOracle } from '../typechain/MockZenonNonceOracle';
 import { BytesLike, Wallet, Signer, BigNumber, Transaction } from 'ethers';
 import { AddressZero } from '@ethersproject/constants';
 
@@ -114,7 +114,7 @@ describe('Pool Router Agent', () => {
 describe('Pool Relayer Agent', () => {
     let test: TestPool
     let dex: string
-    let oracle: MockCrocNonceOracle
+    let oracle: MockZenonNonceOracle
     let baseToken: Token
     let quoteToken: Token
     let sender: string
@@ -138,20 +138,20 @@ describe('Pool Relayer Agent', () => {
        await test.initPool(feeRate, 0, 1, 1.5)
        test.useHotPath = false;
 
-       let factory = await ethers.getContractFactory("MockCrocNonceOracle")
-       oracle = await (factory.deploy() as Promise<MockCrocNonceOracle>)
+       let factory = await ethers.getContractFactory("MockZenonNonceOracle")
+       oracle = await (factory.deploy() as Promise<MockZenonNonceOracle>)
     })
 
     async function formSignature (callpath: number, cmd: BytesLike, conds: BytesLike, tip: BytesLike) {
         const domain = {
-            name: "CrocSwap",
+            name: "ZenonSwap",
             version: "1.0",
             chainId: 31337,
             verifyingContract: dex
         }
 
         const types = {
-            CrocRelayerCall: [
+            ZenonRelayerCall: [
                 { name: "callpath", type: "uint8"},
                 { name: "cmd", type: "bytes" },
                 { name: "conds", type: "bytes" },

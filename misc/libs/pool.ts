@@ -1,9 +1,9 @@
 import { AbiCoder } from "@ethersproject/abi";
 import { COLD_PROXY_IDX } from "../constants/addrs";
-import { CrocPoolParams } from "../constants/poolParams";
-import { CrocProtocolCmd } from "./governance";
+import { ZenonPoolParams } from "../constants/poolParams";
+import { ZenonProtocolCmd } from "./governance";
 
-export function initLiqCmd (params: CrocPoolParams): CrocProtocolCmd {
+export function initLiqCmd (params: ZenonPoolParams): ZenonProtocolCmd {
     const abi = new AbiCoder()
     let setPoolLiqCmd = abi.encode(["uint8", "uint128"], [112, params.universal.initLiq])
     return {
@@ -13,7 +13,7 @@ export function initLiqCmd (params: CrocPoolParams): CrocProtocolCmd {
     }
 }
 
-export function poolStdTemplCmd (params: CrocPoolParams): CrocProtocolCmd {
+export function poolStdTemplCmd (params: ZenonPoolParams): ZenonProtocolCmd {
     const abi = new AbiCoder()
 
     const feeArgs = params.stdPoolParams.feeBps * 100

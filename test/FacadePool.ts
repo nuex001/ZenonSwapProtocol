@@ -6,15 +6,15 @@ import { solidity } from "ethereum-waffle";
 import chai from "chai";
 import { OrderDirective, PassiveDirective, SwapDirective, PoolDirective, encodeOrderDirective } from './EncodeOrder';
 import { MockERC20 } from '../typechain/MockERC20';
-import { CrocSwapDex } from '../typechain/CrocSwapDex';
+import { ZenonSwapDex } from '../typechain/ZenonSwapDex';
 import { Signer, ContractFactory, BigNumber, ContractTransaction, BytesLike, Contract, PayableOverrides, Bytes, BigNumberish } from 'ethers';
 import { simpleSettle, singleHop, simpleMint, simpleSwap, simpleMintAmbient, singleHopPools, doubleHop } from './EncodeSimple';
 import { MockPermit } from '../typechain/MockPermit';
 import { QueryHelper } from '../typechain/QueryHelper';
 import { TestSettleLayer } from "../typechain/TestSettleLayer";
-import { CrocQuery } from "../typechain/CrocQuery";
+import { ZenonQuery } from "../typechain/ZenonQuery";
 import { BootPath } from "../contracts/typechain";
-import { buildCrocSwapSex } from "./SetupDex";
+import { buildZenonSwapSex } from "./SetupDex";
 
 chai.use(solidity);
 
@@ -69,7 +69,7 @@ export async function makeTokenNext (pool: TestPool): Promise<TestPool> {
     return makePoolFrom(pool.quote, tokenZ)
 }
 
-export async function makePoolFrom (tokenX: Token, tokenY: Token, dex?: CrocSwapDex): Promise<TestPool> {
+export async function makePoolFrom (tokenX: Token, tokenY: Token, dex?: ZenonSwapDex): Promise<TestPool> {
     let base = sortBaseToken(tokenX, tokenY)
     let quote = sortQuoteToken(tokenX, tokenY)
 
@@ -137,8 +137,8 @@ export class NativeEther implements Token {
 }
 
 export class TestPool {
-    dex: Promise<CrocSwapDex>
-    query: Promise<CrocQuery>
+    dex: Promise<ZenonSwapDex>
+    query: Promise<ZenonQuery>
     trader: Promise<Signer>
     auth: Promise<Signer>
     other: Promise<Signer>
@@ -159,7 +159,7 @@ export class TestPool {
     liqBase: boolean
     initTemplBefore: boolean
 
-    constructor (base: Token, quote: Token, dex?: CrocSwapDex) {
+    constructor (base: Token, quote: Token, dex?: ZenonSwapDex) {
         this.base = base
         this.quote = quote
         this.poolIdx = POOL_IDX
@@ -176,16 +176,16 @@ export class TestPool {
         this.liqBase = true
         this.initTemplBefore = true
 
-        factory = ethers.getContractFactory("CrocSwapDexSeed")
+        factory = ethers.getContractFactory("ZenonSwapDexSeed")
         if (dex) {
             this.dex = Promise.resolve(dex)
         } else {
-            this.dex = buildCrocSwapSex(this.auth)
+            this.dex = buildZenonSwapSex(this.auth)
         }
 
-        factory = ethers.getContractFactory("CrocQuery")
+        factory = ethers.getContractFactory("ZenonQuery")
         this.query = factory.then(f => this.dex.then(
-            d => f.deploy(d.address))) as Promise<CrocQuery>
+            d => f.deploy(d.address))) as Promise<ZenonQuery>
     
         this.baseSnap = Promise.resolve(BigNumber.from(0))
         this.quoteSnap = Promise.resolve(BigNumber.from(0))
@@ -246,10 +246,10 @@ export class TestPool {
     async encodeInitPool (poolIdx: BigNumberish, price:number | BigNumber): Promise<BytesLike> {
         let abiCoder = new ethers.utils.AbiCoder()
         return abiCoder.encode(["uint8", "address", "address", "uint256", "uint128"],
-                [71, (await this.base).address, (await this.quote).address, poolIdx, this.toCrocPrice(price)])
+                [71, (await this.base).address, (await this.quote).address, poolIdx, this.toZenonPrice(price)])
     }
 
-    toCrocPrice (price: number | BigNumber): BigNumber {
+    toZenonPrice (price: number | BigNumber): BigNumber {
         return typeof(price) === "number" ? toSqrtPrice(price) : price
     }
 

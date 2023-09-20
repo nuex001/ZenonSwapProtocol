@@ -3,15 +3,15 @@ This doc outlines the layout of the repository and highlights important source f
 
 # ./contracts
 
-* CrocSwapDex.sol - The top level smart contract for the entire decentralized exchange protocol. One contract
+* ZenonSwapDex.sol - The top level smart contract for the entire decentralized exchange protocol. One contract
 instances manages every pair and the protocol and serves as a single point of entry for end-users.
-* CrocEvents.sol - Defines top-level Ethereum log events inside the protocol
+* ZenonEvents.sol - Defines top-level Ethereum log events inside the protocol
 
 # ./contracts/governance
 
-* CrocPolicy.sol - Middle-layer contract sitting between top-level governance and the underlying CrocSwapDex mechanism
+* ZenonPolicy.sol - Middle-layer contract sitting between top-level governance and the underlying ZenonSwapDex mechanism
 contract. Allows for either straight pass through of governance resolutions or for rules governing what external 
-policy oracles can invoke on the underlying CrocSwapDex contract.
+policy oracles can invoke on the underlying ZenonSwapDex contract.
 
 # ./contracts/libraries
 
@@ -70,17 +70,17 @@ can be imported into a top-level smart contract.
 
 # ./contracts/interfaces/
 
-Abstract interfaces related to external calls made by the CrocSwap contract in certain circumstances.
+Abstract interfaces related to external calls made by the ZenonSwap contract in certain circumstances.
 
-* ICrocCondOracle.sol - Conditional oracle interface used for commands where an arbitrary condition is checked before executing.
-* ICrocLpConduit.sol - Defines an LP conduit that accepts and manages liquidity on behalf of users.
-* ICrocVirtualToken.sol - Portal for defining the deposit and withdraw of virtualized tokens into the dex.
-* ICrocPermitOracle.sol - Defines a permissioned pool oracle that gatekeeps access to one or more pools
-* ICrocMinion.sol - Defines an interface to be called by CrocPolicy contract (implemented by CrocSwapDex contract)
+* IZenonCondOracle.sol - Conditional oracle interface used for commands where an arbitrary condition is checked before executing.
+* IZenonLpConduit.sol - Defines an LP conduit that accepts and manages liquidity on behalf of users.
+* IZenonVirtualToken.sol - Portal for defining the deposit and withdraw of virtualized tokens into the dex.
+* IZenonPermitOracle.sol - Defines a permissioned pool oracle that gatekeeps access to one or more pools
+* IZenonMinion.sol - Defines an interface to be called by ZenonPolicy contract (implemented by ZenonSwapDex contract)
 
 # ./contracts/periphery/
 
-* CrocLpErc20.sol - Implements ICrocLpConduit to wrap ambient liquidity into a standardized ERC20 LP token.
+* ZenonLpErc20.sol - Implements IZenonLpConduit to wrap ambient liquidity into a standardized ERC20 LP token.
 
 # ./contracts/callpaths/
 

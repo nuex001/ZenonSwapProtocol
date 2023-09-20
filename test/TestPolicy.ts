@@ -6,14 +6,14 @@ import { toFixedGrowth, fromFixedGrowth } from './FixedPoint';
 import { solidity } from "ethereum-waffle";
 import chai from "chai";
 import { MockMinion } from '../typechain/MockMinion';
-import { CrocPolicy } from '../typechain/CrocPolicy';
+import { ZenonPolicy } from '../typechain/ZenonPolicy';
 import { Wallet, Signer } from 'ethers';
 import { MockERC20, MockTimelock } from '../typechain';
 
 chai.use(solidity);
 
-describe('CrocPolicy', () => {
-    let policy: CrocPolicy
+describe('ZenonPolicy', () => {
+    let policy: ZenonPolicy
     let minion: MockMinion
     let accts: Wallet[]
     let ops: MockTimelock
@@ -26,8 +26,8 @@ describe('CrocPolicy', () => {
       let factory = await ethers.getContractFactory("MockMinion");
       minion = (await factory.deploy()) as MockMinion;
 
-      factory = await ethers.getContractFactory("CrocPolicy");
-      policy = (await factory.deploy(minion.address)) as CrocPolicy;
+      factory = await ethers.getContractFactory("ZenonPolicy");
+      policy = (await factory.deploy(minion.address)) as ZenonPolicy;
 
       factory = await ethers.getContractFactory("MockTimelock");
       treasury = (await factory.deploy(policy.address)) as MockTimelock;
@@ -79,7 +79,7 @@ describe('CrocPolicy', () => {
         let ops2 = (await factory.deploy(accts[3].address)) as MockTimelock;
         let emergency2 = (await factory.deploy(accts[3].address)) as MockTimelock;
 
-        // Will reject because the MockTimelock is not set to accept CrocPolicy address
+        // Will reject because the MockTimelock is not set to accept ZenonPolicy address
         await expect(treasury.transferGovernance(ops2.address, treasury.address, emergency.address)).to.be.reverted
         await expect(treasury.transferGovernance(ops.address, treasury2.address, emergency.address)).to.be.reverted
         await expect(treasury.transferGovernance(ops.address, treasury.address, emergency2.address)).to.be.reverted

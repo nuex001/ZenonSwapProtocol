@@ -1,23 +1,23 @@
 
-import { CrocSwapDexSeed } from '../../typechain/CrocSwapDexSeed';
+import { ZenonSwapDexSeed } from '../../typechain/ZenonSwapDexSeed';
 import { ethers } from 'hardhat';
 import { ContractFactory, BytesLike, BigNumber } from 'ethers';
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { toSqrtPrice, fromSqrtPrice, MIN_PRICE, MAX_PRICE, MIN_TICK, ZERO_ADDR } from '../../test/FixedPoint';
 import { MockERC20 } from '../../typechain/MockERC20';
 import { QueryHelper } from '../../typechain/QueryHelper';
-import { CrocSwapDex } from '../../typechain/CrocSwapDex';
+import { ZenonSwapDex } from '../../typechain/ZenonSwapDex';
 import { IERC20Minimal } from '../../typechain/IERC20Minimal';
 import { ColdPath } from '../../typechain/ColdPath';
 import { AddressZero } from '@ethersproject/constants';
 import { WarmPath } from '../../typechain/WarmPath';
 import { LongPath } from '../../typechain/LongPath';
 import { MicroPaths } from '../../typechain/MicroPaths';
-import { CrocPolicy } from '../../typechain/CrocPolicy';
-import { CrocQuery } from '../../typechain/CrocQuery';
-import { CrocShell } from '../../typechain/CrocShell';
+import { ZenonPolicy } from '../../typechain/ZenonPolicy';
+import { ZenonQuery } from '../../typechain/ZenonQuery';
+import { ZenonShell } from '../../typechain/ZenonShell';
 import { HotPath } from '../../typechain/HotPath';
-import { CrocImpact, KnockoutFlagPath, KnockoutLiqPath } from '../../typechain';
+import { ZenonImpact, KnockoutFlagPath, KnockoutLiqPath } from '../../typechain';
 
 let override = { gasPrice: BigNumber.from("10").pow(9).mul(2), gasLimit: 6000000 }
 
@@ -123,28 +123,28 @@ async function deploy() {
     let crossPath = addrs.koCross ? factory.attach(addrs.koCross) :
         await factory.deploy(override) as KnockoutFlagPath    
         
-    factory = await ethers.getContractFactory("CrocSwapDex")
+    factory = await ethers.getContractFactory("ZenonSwapDex")
     let dex = addrs.dex ? factory.attach(addrs.dex) :
-        await factory.deploy(authority.address, coldPath.address, override) as CrocSwapDex
+        await factory.deploy(authority.address, coldPath.address, override) as ZenonSwapDex
             
-    factory = await ethers.getContractFactory("CrocPolicy")
+    factory = await ethers.getContractFactory("ZenonPolicy")
     let policy = (addrs.policy ? factory.attach(addrs.policy) :
         await factory.deploy(dex.address, await authority.getAddress(),
-        await authority.getAddress(), await authority.getAddress())) as CrocPolicy
+        await authority.getAddress(), await authority.getAddress())) as ZenonPolicy
 
-    factory = await ethers.getContractFactory("CrocQuery")
+    factory = await ethers.getContractFactory("ZenonQuery")
     let query = (addrs.query ? factory.attach(addrs.query) :
-        await factory.deploy(dex.address, override)) as CrocQuery
+        await factory.deploy(dex.address, override)) as ZenonQuery
 
-    factory = await ethers.getContractFactory("CrocImpact")
+    factory = await ethers.getContractFactory("ZenonImpact")
     let impact = (addrs.impact ? factory.attach(addrs.impact) :
-        await factory.deploy(dex.address, override)) as CrocImpact
+        await factory.deploy(dex.address, override)) as ZenonImpact
         
     console.log(impact.address)
     
-    factory = await ethers.getContractFactory("CrocShell")
+    factory = await ethers.getContractFactory("ZenonShell")
     let shell = (addrs.shell ? factory.attach(addrs.shell) :
-        await factory.deploy(override)) as CrocShell
+        await factory.deploy(override)) as ZenonShell
 
     console.log({ warm: warmPath.addrs, long: longPath.addrs, micro: microPath.addrs, hot: hotPath.addrs, 
         dex: dex.addrs, policy: policy.addrs, query: query.addrs, shell: shell.addrs})
