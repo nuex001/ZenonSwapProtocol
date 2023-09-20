@@ -2,7 +2,7 @@
 
 pragma solidity 0.8.19;
 
-/* @title Zenon conditional oracle interface
+/* @title Zenon conditionals oracle interface
  * @notice Defines a generalized interface for checking an arbitrary condition. Used in
  *         an off-chain relayer context. User can gate specific order on a runtime 
  *         condition by calling to the oracle. */

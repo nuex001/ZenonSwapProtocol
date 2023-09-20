@@ -14,7 +14,7 @@ import '../libraries/Directives.sol';
  *      on post-knockout liquidity. An order is eligible to be claimed/recovered only after
  *      its liquidity has been knocked out of the curve, and is no longer active. Since a
  *      no longer active order does not affect the liquidity or state of the curve, permit
- *      oracles have no economic reason to restrict knockout claims/recovers. */
+ *      oracles have no economic reason to restrict knockout claim/recovers. */
 interface IZenonPermitOracle {
 
     /* @notice Verifies whether a given user is permissioned to perform an arbitrary 

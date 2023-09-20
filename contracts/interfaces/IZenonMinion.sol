@@ -4,7 +4,7 @@ pragma solidity 0.8.19;
 
 import '../libraries/CurveCache.sol';
 
-/* @notice Simple interface that defines the surface between the ZenonSwapDex
+/* @notice Simple interface that define the surface between the ZenonSwapDex
  *         itself and protocol governance and policy. All governance actions are
  *         are executed through the single protocolCmd() method. */
 interface ICrocMinion {
