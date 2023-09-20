@@ -2,12 +2,12 @@
 
 pragma solidity 0.8.19;
 
-import "../governance/CrocPolicy.sol";
+import "../governance/ZenonPolicy.sol";
 import "hardhat/console.sol";
 
 contract MockTimelock {
 
-    address public policy_;
+    address public policy_;ss
 
     constructor (address policy) {
         policy_ = policy;
@@ -19,32 +19,32 @@ contract MockTimelock {
 
     function treasuryResolution (address minion, uint16 proxyPath,
                                  bytes calldata cmd, bool sudo) public {
-        return CrocPolicy(policy_).treasuryResolution(minion, proxyPath, cmd, sudo);
+        return  ZenonPolicy(policy_).treasuryResolution(minion, proxyPath, cmd, sudo);
     }
 
     function opsResolution (address minion, uint16 proxyPath,
                             bytes calldata cmd) public {
-        return CrocPolicy(policy_).opsResolution(minion, proxyPath, cmd);
+        return ZenonPolicy(policy_).opsResolution(minion, proxyPath, cmd);
     }
 
     function transferGovernance (address treasury, address ops, address emergency) public {
-        return CrocPolicy(policy_).transferGovernance(treasury, ops, emergency);
+        return ZenonPolicy(policy_).transferGovernance(treasury, ops, emergency);
     }
 
     function emergencyHalt (address minion, string calldata reason) public {
-        return CrocPolicy(policy_).emergencyHalt(minion, reason);
+        return ZenonPolicy(policy_).emergencyHalt(minion, reason);
     }
 
     function emergencyReset (address conduit, uint16 proxyPath, string calldata reason) public {
-        return CrocPolicy(policy_).emergencyReset(conduit, proxyPath, reason);
+        return ZenonPolicy(policy_).emergencyReset(conduit, proxyPath, reason);
     }
 
-    function forcePolicy (address conduit, uint16 proxyPath, CrocPolicy.PolicyRule calldata policy) public {
-        return CrocPolicy(policy_).forcePolicy(conduit, proxyPath, policy);
+    function forcePolicy (address conduit, uint16 proxyPath, ZenonPolicy.PolicyRule calldata policy) public {
+        return ZenonPolicy(policy_).forcePolicy(conduit, proxyPath, policy);
     }
 
-    function setPolicy (address conduit, uint16 proxyPath, CrocPolicy.PolicyRule calldata policy) public {
-        return CrocPolicy(policy_).setPolicy(conduit, proxyPath, policy);
+    function setPolicy (address conduit, uint16 proxyPath, ZenonPolicy.PolicyRule calldata policy) public {
+        return ZenonPolicy(policy_).setPolicy(conduit, proxyPath, policy);
     }
 
 }

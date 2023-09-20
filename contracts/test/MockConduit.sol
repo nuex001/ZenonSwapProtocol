@@ -1,11 +1,11 @@
-// SPDX-License-Identifier: GPL-3
+// SPDX-License-Identifier: MIT
 
 pragma solidity 0.8.19;
 
-import "../interfaces/ICrocLpConduit.sol";
+import "../interfaces/IZenonLpConduit.sol";
 import "../libraries/PoolSpecs.sol";
 
-contract MockLpConduit is ICrocLpConduit {
+contract MockLpConduit is IZenonLpConduit {
 
     bool accept_;
 
@@ -30,7 +30,7 @@ contract MockLpConduit is ICrocLpConduit {
         return poolSnap_ == PoolSpecs.encodeKey(base, quote, poolIdx);
     }
 
-    function depositCrocLiq (address sender, bytes32 poolHash,
+    function depositCZenonLiq (address sender, bytes32 poolHash,
                              int24 lowerTick, int24 upperTick, uint128 liq,
                              uint64 mileage) public override returns (bool) {
         isDeposit_ = true;
@@ -43,7 +43,7 @@ contract MockLpConduit is ICrocLpConduit {
         return accept_;
     }
 
-    function withdrawCrocLiq (address sender, bytes32 poolHash,
+    function withdrawZenonLiq (address sender, bytes32 poolHash,
                               int24 lowerTick, int24 upperTick, uint128 liq,
                               uint64 mileage) public override returns (bool) {
         isDeposit_ = false;

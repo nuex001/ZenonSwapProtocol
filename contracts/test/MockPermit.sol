@@ -2,9 +2,9 @@
 
 pragma solidity 0.8.19;
 
-import "../interfaces/ICrocPermitOracle.sol";
+import "../interfaces/IZenonPermitOracle.sol";
 
-contract MockPermit is ICrocPermitOracle {
+contract MockPermit is IZenonPermitOracle {
 
     address public user_;
     address public base_;
@@ -33,7 +33,7 @@ contract MockPermit is ICrocPermitOracle {
     }
         
 
-    function checkApprovedForCrocPool (address user, address sender,
+    function checkApprovedForZenonPool (address user, address sender,
                                        address base, address quote,
                                        Directives.AmbientDirective calldata,
                                        Directives.SwapDirective calldata,
@@ -47,7 +47,7 @@ contract MockPermit is ICrocPermitOracle {
         discount = (user == user_ && base == base_ && quote_ == quote) ? 1 : 0;
      }
 
-    function checkApprovedForCrocSwap (address user, address sender,
+    function checkApprovedForZenonSwap (address user, address sender,
                                        address base, address quote,
                                        bool isBuy, bool inBaseQty, uint128 qty,
                                        uint16 poolFee)
@@ -62,7 +62,7 @@ contract MockPermit is ICrocPermitOracle {
         discount = (user == user_ && base == base_ && quote_ == quote) ? 1 : 0;
     }
 
-    function checkApprovedForCrocMint (address user, address sender,
+    function checkApprovedForZenonMint (address user, address sender,
                                        address base, address quote,
                                        int24 bidTick, int24 askTick, uint128 liq)
          external override returns (bool) {
@@ -75,7 +75,7 @@ contract MockPermit is ICrocPermitOracle {
          return user == user_ && base == base_ && quote_ == quote;
      }
 
-    function checkApprovedForCrocBurn (address user, address sender,
+    function checkApprovedForZenonBurn (address user, address sender,
                                        address base, address quote,
                                        int24 bidTick, int24 askTick, uint128 liq)
          external override returns (bool) {
@@ -88,7 +88,7 @@ contract MockPermit is ICrocPermitOracle {
          return user == user_ && base == base_ && quote_ == quote;
      }
 
-    function checkApprovedForCrocInit (address user, address sender,
+    function checkApprovedForZenonInit (address user, address sender,
                                        address base, address quote, uint256 poolIdx)
          external override returns (bool) {
          if (passThru_) { return true; }

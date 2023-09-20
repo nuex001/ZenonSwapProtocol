@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3
+// SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
     
 import "../mixins/AgentMask.sol";
@@ -19,7 +19,7 @@ contract TestAgentMask is AgentMask {
                                   bytes calldata conds,
                                   bytes memory tip,
                                   bytes calldata signature) public {
-        CrocRelayerCall memory call = CrocRelayerCall(callpath, cmd, conds, tip);
+        ZenonRelayerCall memory call = ZenonRelayerCall(callpath, cmd, conds, tip);
         signer_ = verifySignature(call, signature);
     }
 

@@ -1,11 +1,11 @@
-// SPDX-License-Identifier: GPL-3
+// SPDX-License-Identifier: MIT
 
 pragma solidity 0.8.19;
 
-import "../interfaces/ICrocCondOracle.sol";
+import "../interfaces/IZenonCondOracle.sol";
 
-contract MockCrocNonceOracle is ICrocNonceOracle,
-    ICrocCondOracle{
+contract MockZenonNonceOracle is IZenonNonceOracle,
+    IZenonCondOracle{
 
     address public user_;
     bytes32 public salt_;
@@ -17,7 +17,7 @@ contract MockCrocNonceOracle is ICrocNonceOracle,
         accept_ = accept;
     }
 
-    function checkCrocNonceSet (address user, bytes32 nonceSalt, uint32 nonce,
+    function checkZenonNonceSet (address user, bytes32 nonceSalt, uint32 nonce,
                                 bytes calldata args) public override returns (bool) {
         user_ = user;
         salt_ = nonceSalt;
@@ -26,7 +26,7 @@ contract MockCrocNonceOracle is ICrocNonceOracle,
         return accept_;
     }
 
-    function checkCrocCond (address user, 
+    function checkZenonCond (address user, 
                             bytes calldata args) public override returns (bool) {
         user_ = user;
         args_ = args;
