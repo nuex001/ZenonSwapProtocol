@@ -1,15 +1,15 @@
-// SPDX-License-Identifier: GPL-3 
+// SPDX-License-Identifier: MIT
 
 pragma solidity 0.8.19;
 
 import '../libraries/CurveCache.sol';
 
-/* @notice Simple interface that defines the surface between the CrocSwapDex
+/* @notice Simple interface that defines the surface between the ZenonSwapDex
  *         itself and protocol governance and policy. All governance actions are
  *         are executed through the single protocolCmd() method. */
 interface ICrocMinion {
 
-    /* @notice Calls a general governance authorized command on the CrocSwapDex contract.
+    /* @notice Calls a general governance authorized command on the ZenonSwapDex contract.
      *
      * @param proxyPath The proxy callpath sidecar to execute the command within. (Will
      *                  call protocolCmd
@@ -23,7 +23,7 @@ interface ICrocMinion {
         payable external;
 }
 
-/* @notice Interface for a contract that directly governs a CrocSwap dex contract. */
+/* @notice Interface for a contract that directly governs a ZenonSwap dex contract. */
 interface ICrocMaster {
     /* @notice Used to validate governance contract to prevent authority transfer to an
      *         an invalid address or contract. */

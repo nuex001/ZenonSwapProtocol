@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3 
+// SPDX-License-Identifier: MIT 
 
 pragma solidity 0.8.19;
 
@@ -7,7 +7,7 @@ import '../libraries/Directives.sol';
 /* @notice Standard interface for a permit oracle to be used by a permissioned pool. 
  * 
  * @dev For pools under their control permit oracles have the ability to approve or deny
- *      pool initialization, swaps, mints and burns for all liquidity types (ambient,
+ *      pool initialization, swaps, mints and burns for all liquidity types (zenon,
  *      concentrated and knockout). 
  * 
  *      Note that permit oracles do *not* have the ability to restrict claims or recovers 
@@ -15,7 +15,7 @@ import '../libraries/Directives.sol';
  *      its liquidity has been knocked out of the curve, and is no longer active. Since a
  *      no longer active order does not affect the liquidity or state of the curve, permit
  *      oracles have no economic reason to restrict knockout claims/recovers. */
-interface ICrocPermitOracle {
+interface IZenonPermitOracle {
 
     /* @notice Verifies whether a given user is permissioned to perform an arbitrary 
      *          action on the pool.
@@ -37,7 +37,7 @@ interface ICrocPermitOracle {
      *                      is defined in terms of N-1 (because 0 is already used to indicate failure).
      *                      Hence return value of 1 indicates a discount of 0, return value of 2 
      *                      indicates discount of 0.0001%, return value of 3 is 0.0002%, and so on */
-    function checkApprovedForCrocPool (address user, address sender,
+    function checkApprovedForZenonPool (address user, address sender,
                                        address base, address quote,
                                        Directives.AmbientDirective calldata ambient,
                                        Directives.SwapDirective calldata swap,
@@ -65,7 +65,7 @@ interface ICrocPermitOracle {
      *                      is defined in terms of N-1 (because 0 is already used to indicate failure).
      *                      Hence return value of 1 indicates a discount of 0, return value of 2 
      *                      indicates discount of 0.0001%, return value of 3 is 0.0002%, and so on */
-    function checkApprovedForCrocSwap (address user, address sender,
+    function checkApprovedForZenonSwap (address user, address sender,
                                        address base, address quote,
                                        bool isBuy, bool inBaseQty, uint128 qty,
                                        uint16 poolFee)
@@ -84,9 +84,9 @@ interface ICrocPermitOracle {
      * @param liq      The total amount of liquidity being minted. Denominated as 
      *                 sqrt(X*Y)
      *
-     * @returns       Returns true if action is permitted. If false, CrocSwap will revert
+     * @returns       Returns true if action is permitted. If false, ZenonSwap will revert
      *                the transaction. */
-    function checkApprovedForCrocMint (address user, address sender,
+    function checkApprovedForZenonMint (address user, address sender,
                                        address base, address quote,
                                        int24 bidTick, int24 askTick, uint128 liq)
         external returns (bool);
@@ -104,9 +104,9 @@ interface ICrocPermitOracle {
      * @param liq      The total amount of liquidity being minted. Denominated as 
      *                 sqrt(X*Y)
      *
-     * @returns       Returns true if action is permitted. If false, CrocSwap will revert
+     * @returns       Returns true if action is permitted. If false, ZenonSwap will revert
      *                the transaction. */
-    function checkApprovedForCrocBurn (address user, address sender,
+    function checkApprovedForZenonBurn (address user, address sender,
                                        address base, address quote,
                                        int24 bidTick, int24 askTick, uint128 liq)
         external returns (bool);
@@ -119,11 +119,11 @@ interface ICrocPermitOracle {
      *               be same as user, the calling router, or the off-chain relayer.
      * @param base The base-side token in the pair.
      * @param quote The quote-side token in the pair.
-     * @param poolIdx The Croc-specific pool type index the pool is being created on.
+     * @param poolIdx The Zenon-specific pool type index the pool is being created on.
      *
-     * @returns       Returns true if action is permitted. If false, CrocSwap will revert
+     * @returns       Returns true if action is permitted. If false, ZenonSwap will revert
      *                the transaction, and pool will not be initialized. */
-    function checkApprovedForCrocInit (address user, address sender,
+    function checkApprovedForZenonInit (address user, address sender,
                                        address base, address quote, uint256 poolIdx)
         external returns (bool);
 
