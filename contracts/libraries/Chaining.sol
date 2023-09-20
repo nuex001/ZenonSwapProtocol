@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3
+// SPDX-License-Identifier: MIT
 
 pragma solidity 0.8.19;
 pragma experimental ABIEncoderV2;
@@ -70,7 +70,7 @@ library Chaining {
         RollTarget roll_;
     }
 
-    /* @notice In certain contexts CrocSwap provides the ability for the user to
+    /* @notice In certain contexts ZenonSwap provides the ability for the user to
     *     substitute pre-fixed quantity fields with empty "rolling" fields that are
     *     back-filled based on some cumulative flow across the execution. For example
     *     a swap may specify to buy however much of quote token was demanded by an
