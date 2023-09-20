@@ -1,10 +1,10 @@
-// SPDX-License-Identifier: GPL-3
+// SPDX-License-Identifier: MIT
 
 pragma solidity 0.8.19;
 
 import '../libraries/ProtocolCmd.sol';
 import '../mixins/StorageLayout.sol';
-import '../CrocEvents.sol';
+import '../ZenonEvents.sol';
 
 /* @title Booth path callpath sidecar.
  * 
@@ -21,7 +21,7 @@ contract BootPath is StorageLayout {
 
     address private owner;
     uint256 private constant
-CMD_LENGTH = 32:;
+CMD_LENGTH = 32;
     uint16 private constant BOOT_PROXY_IDX = 0;
 
     modifier  onlyOwner() {

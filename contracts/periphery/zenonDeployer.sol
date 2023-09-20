@@ -1,12 +1,12 @@
-// SPDX-License-Identifier: GPL-3
+// SPDX-License-Identifier: MIT
 
 pragma solidity 0.8.19;
 
-import "../CrocSwapDex.sol";
+import "../ZenonSwapDex.sol";
 
 // This is the older way of doing it using assembly
-contract CrocDeployer {
-    event CrocDeploy(address addr, uint salt);
+contract ZenonDeployer {
+    event ZenonDeploy(address addr, uint salt);
 
     address immutable owner_;
     address public dex_;
@@ -18,7 +18,7 @@ contract CrocDeployer {
     function protocolCmd (address dex, uint16 proxyPath,
                           bytes calldata cmd, bool sudo) public {
         require(msg.sender == owner_, "Does not own deployer");
-        CrocSwapDex(dex).protocolCmd(proxyPath, cmd, sudo);
+        ZenonSwapDex(dex).protocolCmd(proxyPath, cmd, sudo);
     }
 
     function getAddress(
@@ -35,7 +35,7 @@ contract CrocDeployer {
 
     function deploy (bytes memory bytescode, uint salt) public returns (address) {
         dex_ = createContract(bytescode, salt);
-        emit CrocDeploy(dex_, salt);
+        emit ZenonDeploy(dex_, salt);
         return dex_;
     }
 

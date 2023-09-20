@@ -2,10 +2,11 @@
 
 pragma solidity 0.8.19;
 
-library CrocEvents {
+
+library ZenonEvents {
 
 
-    /* @notice Emitted when governance authority for CrocSwapDex is transfered.
+    /* @notice Emitted when governance authority for ZenonSwapDex is transfered.
      * @param The authority being transfered to. */
     event AuthorityTransfer (address indexed authority);
 

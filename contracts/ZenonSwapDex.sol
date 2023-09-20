@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3
+// SPDX-License-Identifier: MIT
 
 pragma solidity 0.8.19;
 
@@ -10,7 +10,7 @@ import './mixins/MarketSequencer.sol';
 import './mixins/SettleLayer.sol';
 import './mixins/PoolRegistry.sol';
 
-import './interfaces/ICrocMinion.sol';
+import './interfaces/IZenonMinion.sol';
 import './callpaths/ColdPath.sol';
 import './callpaths/BootPath.sol';
 import './callpaths/WarmPath.sol';
@@ -20,14 +20,14 @@ import './callpaths/KnockoutPath.sol';
 import './callpaths/MicroPaths.sol';
 import './callpaths/SafeModePath.sol';
 
-/* @title CrocSwap exchange contract
- * @notice Top-level CrocSwap contract. Contains all public facing methods and state
+/* @title ZenonSwap exchange contract
+ * @notice Top-level ZenonSwap contract. Contains all public facing methods and state
  *         for the entire dex across every pool.
  *
  * @dev    Sidecar proxy contracts exist to contain code that doesn't fit in the Ethereum
  *         limit, but this is the only contract that users need to directly interface 
  *         with. */
-contract CrocSwapDex is HotPath, ICrocMinion {
+contract ZenonSwapDex is HotPath, IZenonMinion {
 
     using SafeCast for uint128;
     using TokenFlow for TokenFlow.PairSeq;
@@ -39,7 +39,7 @@ contract CrocSwapDex is HotPath, ICrocMinion {
         // proper governance contract (if deployer already isn't)
         authority_ = msg.sender;
         hotPathOpen_ = true;
-        proxyPaths_[CrocSlots.BOOT_PROXY_IDX] = address(new BootPath());
+        proxyPaths_[ZenonSlots.BOOT_PROXY_IDX] = address(new BootPath());
     }
 
     /* @notice Swaps between two tokens within a single liquidity pool.
@@ -136,7 +136,7 @@ contract CrocSwapDex is HotPath, ICrocMinion {
     function userCmdRelayer (uint16 callpath, bytes calldata cmd,
                              bytes calldata conds, bytes calldata relayerTip, 
                              bytes calldata signature)
-        reEntrantAgent(CrocRelayerCall(callpath, cmd, conds, relayerTip), signature)
+        reEntrantAgent(ZenonRelayerCall(callpath, cmd, conds, relayerTip), signature)
         public payable returns (bytes memory output) {
         output = callUserCmd(callpath, cmd);
         tipRelayer(relayerTip);
@@ -160,7 +160,7 @@ contract CrocSwapDex is HotPath, ICrocMinion {
 
     /* @notice General purpose query fuction for reading arbitrary data from the dex.
      * @dev    This function is bare bones, because we're trying to keep the size 
-     *         footprint of CrocSwapDex down. See SlotLocations.sol and QueryHelper.sol 
+     *         footprint of ZenonSwapDex down. See SlotLocations.sol and QueryHelper.sol 
      *         for syntactic sugar around accessing/parsing specific data. */
     function readSlot (uint256 slot) public view returns (uint256 data) {
         assembly {
@@ -169,24 +169,24 @@ contract CrocSwapDex is HotPath, ICrocMinion {
     }
 
     /* @notice Validation function used by external contracts to verify an address is
-     *         a valid CrocSwapDex contract. */
-    function acceptCrocDex() pure public returns (bool) { return true; }
+     *         a valid ZenonSwapDex contract. */
+    function acceptZenonDex() pure public returns (bool) { return true; }
 }
 
 
-/* @notice Alternative constructor to CrocSwapDex that's more convenient. However
+/* @notice Alternative constructor to ZenonSwapDex that's more convenient. However
  *     the deploy transaction is several hundred kilobytes and will get droppped by 
  *     geth. Useful for testing environments though. */
-contract CrocSwapDexSeed  is CrocSwapDex {
+contract ZenonSwapDexSeed  is ZenonSwapDex {
     
     constructor() {
-        proxyPaths_[CrocSlots.LP_PROXY_IDX] = address(new WarmPath());
-        proxyPaths_[CrocSlots.COLD_PROXY_IDX] = address(new ColdPath());
-        proxyPaths_[CrocSlots.LONG_PROXY_IDX] = address(new LongPath());
-        proxyPaths_[CrocSlots.MICRO_PROXY_IDX] = address(new MicroPaths());
-        proxyPaths_[CrocSlots.FLAG_CROSS_PROXY_IDX] = address(new KnockoutFlagPath());
-        proxyPaths_[CrocSlots.KNOCKOUT_LP_PROXY_IDX] = address(new KnockoutLiqPath());
-        proxyPaths_[CrocSlots.SAFE_MODE_PROXY_PATH] = address(new SafeModePath());
+        proxyPaths_[CZenonSlots.LP_PROXY_IDX] = address(new WarmPath());
+        proxyPaths_[ZenonSlots.COLD_PROXY_IDX] = address(new ColdPath());
+        proxyPaths_[ZenonSlots.LONG_PROXY_IDX] = address(new LongPath());
+        proxyPaths_[ZenonSlots.MICRO_PROXY_IDX] = address(new MicroPaths());
+        proxyPaths_[ZenonSlots.FLAG_CROSS_PROXY_IDX] = address(new KnockoutFlagPath());
+        proxyPaths_[ZenonSlots.KNOCKOUT_LP_PROXY_IDX] = address(new KnockoutLiqPath());
+        proxyPaths_[ZenonSlots.SAFE_MODE_PROXY_PATH] = address(new SafeModePath());
     }
 }
 
