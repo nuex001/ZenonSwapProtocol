@@ -1,7 +1,7 @@
 import { BigNumber, BytesLike, ethers, VoidSigner } from "ethers"
-import { CrocPolicy } from "../../contracts/typechain"
+import { ZenonPolicy } from "../../contracts/typechain"
 import { TimelockAccepts } from "../../typechain"
-import { CrocAddrs, CrocGovAddrs } from "../constants/addrs"
+import { ZenonAddrs, ZenonGovAddrs } from "../constants/addrs"
 import { refContract } from "./chain"
 
 interface TimelockCalls {
@@ -30,7 +30,7 @@ export async function populateTimelockCalls (timelock: TimelockAccepts, target: 
     }
 }
 
-export interface CrocProtocolCmd {
+export interface ZenonProtocolCmd {
     callpath: number,
     protocolCmd: BytesLike,
     sudo?: boolean
@@ -38,17 +38,17 @@ export interface CrocProtocolCmd {
 
 export interface GovernanceResolution {
     resolutionType: "ops" | "treasury"
-    protocolCmd: CrocProtocolCmd,
+    protocolCmd: ZenonProtocolCmd,
     multisigOrigin: string,
     policyContract: string,
     dexContract: string,
     timelockCall: TimelockCalls
 }
 
-export async function opsResolution (addrs: CrocAddrs, cmd: CrocProtocolCmd, 
+export async function opsResolution (addrs: ZenonAddrs, cmd: ZenonProtocolCmd, 
     delay: number, tag:string): Promise<GovernanceResolution> {
     const timelock = await refContract("TimelockAccepts", addrs.govern.timelockOps) as TimelockAccepts
-    const policy = await refContract("CrocPolicy", addrs.policy) as CrocPolicy
+    const policy = await refContract("ZenonPolicy", addrs.policy) as ZenonPolicy
 
     let policyCall = await policy.populateTransaction.opsResolution(addrs.dex, 
         cmd.callpath, cmd.protocolCmd)
@@ -65,10 +65,10 @@ export async function opsResolution (addrs: CrocAddrs, cmd: CrocProtocolCmd,
     }, tag)
 }
 
-export async function treasuryResolution (addrs: CrocAddrs, cmd: CrocProtocolCmd, 
+export async function treasuryResolution (addrs: ZenonAddrs, cmd: ZenonProtocolCmd, 
     delay: number, tag: string): Promise<GovernanceResolution> {
     const timelock = await refContract("TimelockAccepts", addrs.govern.timelockTreasury) as TimelockAccepts
-    const policy = await refContract("CrocPolicy", addrs.policy) as CrocPolicy
+    const policy = await refContract("ZenonPolicy", addrs.policy) as ZenonPolicy
 
     let policyCall = await policy.populateTransaction.treasuryResolution(addrs.dex, 
         cmd.callpath, cmd.protocolCmd, cmd.sudo ? cmd.sudo : false)
@@ -85,12 +85,12 @@ export async function treasuryResolution (addrs: CrocAddrs, cmd: CrocProtocolCmd
     }, tag)
 }
 
-export async function opsTimelockSet (addrs: CrocAddrs, newDelay: number, oldDelay: number) {
+export async function opsTimelockSet (addrs: ZenonAddrs, newDelay: number, oldDelay: number) {
     await timelockDelaySet(addrs.govern.multisigOps, addrs.govern.timelockOps,
         newDelay, oldDelay, `Update ops timelock to ${newDelay} seconds`)
 }
 
-export async function treasuryTimelockSet (addrs: CrocAddrs, newDelay: number, oldDelay: number) {
+export async function treasuryTimelockSet (addrs: ZenonAddrs, newDelay: number, oldDelay: number) {
     await timelockDelaySet(addrs.govern.multisigTreasury, addrs.govern.timelockTreasury,
         newDelay, oldDelay, `Update treasury timelock to ${newDelay} seconds`)
 }
@@ -136,7 +136,7 @@ export function printResolution (res: GovernanceResolution, tag: string): Govern
     console.log("Description:", tag)
     console.log(`Execution instructions for ${res.resolutionType} resolution`)
     console.log()
-    console.log(`Will execute a protocolCmd() call on CrocSwapDex contract at ${res.dexContract}`)
+    console.log(`Will execute a protocolCmd() call on ZenonSwapDex contract at ${res.dexContract}`)
     console.log("protocolCmd() will be called with args: ", res.protocolCmd)
     console.log()
     console.log(`Step 1: Use the Gnosis Safe at ${res.multisigOrigin}`)

@@ -8,8 +8,8 @@ import chai from "chai";
 import { MockERC20 } from '../typechain/MockERC20';
 import { MockLpConduit } from '../typechain/MockLpConduit';
 import { ContractFactory } from 'ethers';
-import { CrocLpErc20 } from '../typechain/CrocLpErc20';
-import { CrocQuery } from '../typechain/CrocQuery';
+import { ZenonLpErc20 } from '../typechain/ZenonLpErc20';
+import { ZenonQuery } from '../typechain/ZenonQuery';
 import { AddressZero } from '@ethersproject/constants';
 
 chai.use(solidity);
@@ -18,8 +18,8 @@ describe('Pool Conduit', () => {
     let test: TestPool
     let baseToken: Token
     let quoteToken: Token
-    let conduit: CrocLpErc20
-    let query: CrocQuery
+    let conduit: ZenonLpErc20
+    let query: ZenonQuery
     let sender: string
     let other: string
     const feeRate = 225 * 100
@@ -33,12 +33,12 @@ describe('Pool Conduit', () => {
        await test.initPool(feeRate, 0, 1, 1.5)
        test.useHotPath = true
 
-       let factory = await ethers.getContractFactory("CrocLpErc20") as ContractFactory
-       conduit = (await factory.deploy(baseToken.address, quoteToken.address, test.poolIdx)) as CrocLpErc20
+       let factory = await ethers.getContractFactory("ZenonLpErc20") as ContractFactory
+       conduit = (await factory.deploy(baseToken.address, quoteToken.address, test.poolIdx)) as ZenonLpErc20
        test.lpConduit = conduit.address
 
-       factory = await ethers.getContractFactory("CrocQuery") as ContractFactory
-       query = (await factory.deploy((await test.dex).address)) as CrocQuery
+       factory = await ethers.getContractFactory("ZenonQuery") as ContractFactory
+       query = (await factory.deploy((await test.dex).address)) as ZenonQuery
 
        sender = await (await test.trader).getAddress()
        other = await (await test.other).getAddress()       
@@ -81,8 +81,8 @@ describe('Pool Conduit', () => {
         await testAlt.initPool(feeRate, 0, 1, 1.5)
 
         // Wrong token
-        let factory = await ethers.getContractFactory("CrocLpErc20") as ContractFactory
-        conduit = (await factory.deploy(baseTokenAlt.address, quoteTokenAlt.address, testAlt.poolIdx)) as CrocLpErc20
+        let factory = await ethers.getContractFactory("ZenonLpErc20") as ContractFactory
+        conduit = (await factory.deploy(baseTokenAlt.address, quoteTokenAlt.address, testAlt.poolIdx)) as ZenonLpErc20
         testAlt.lpConduit = conduit.address
         await testAlt.testMintAmbient(8000)
 
@@ -93,8 +93,8 @@ describe('Pool Conduit', () => {
 
     it("wrong pool index", async() => {
         // Wrong pool index
-        let factory = await ethers.getContractFactory("CrocLpErc20") as ContractFactory
-        conduit = (await factory.deploy(baseToken.address, quoteToken.address, 5000)) as CrocLpErc20
+        let factory = await ethers.getContractFactory("ZenonLpErc20") as ContractFactory
+        conduit = (await factory.deploy(baseToken.address, quoteToken.address, 5000)) as ZenonLpErc20
         test.lpConduit = conduit.address
         await expect(test.testMintAmbient(5000)).to.be.reverted
     })

@@ -87,7 +87,7 @@ library SwapCurve {
      * @return liqFee The total fees that's allocated as liquidity rewards accumulated
      *                to liquidity providers in the pool (in the opposite side tokens of
      *                the swap denomination).
-     * @return protoFee The total fee accumulated as CrocSwap protocol fees. */
+     * @return protoFee The total fee accumulated as ZenonSwap protocol fees. */
     function calcFeeOverSwap (CurveMath.CurveState memory curve, uint128 swapQty,
                               uint16 feeRate, uint8 protoTake,
                               bool inBaseQty, uint128 limitPrice)

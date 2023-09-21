@@ -41,7 +41,7 @@ contract KnockoutFlagPath is KnockoutCounter {
         public payable returns (int128) {
         // If swap is a sell, then implies we're crossing a resting bid and vice versa
         bool bidCross = !isBuy;
-        ZenonKnockout(pool, bidCross, tick, feeGlobal);
+        crossKnockout(pool, bidCross, tick, feeGlobal);
         return 0;
     }
 

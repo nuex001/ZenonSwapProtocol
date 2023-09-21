@@ -27,7 +27,7 @@ import './callpaths/SafeModePath.sol';
  * @dev    Sidecar proxy contracts exist to contain code that doesn't fit in the Ethereum
  *         limit, but this is the only contract that users need to directly interface 
  *         with. */
-contract ZenonSwapDex is HotPath, IZenonMinion {
+contract ZenonSwapDex is HotPath,IZenonMinion {
 
     using SafeCast for uint128;
     using TokenFlow for TokenFlow.PairSeq;
@@ -180,7 +180,7 @@ contract ZenonSwapDex is HotPath, IZenonMinion {
 contract ZenonSwapDexSeed  is ZenonSwapDex {
     
     constructor() {
-        proxyPaths_[CZenonSlots.LP_PROXY_IDX] = address(new WarmPath());
+        proxyPaths_[ZenonSlots.LP_PROXY_IDX] = address(new WarmPath());
         proxyPaths_[ZenonSlots.COLD_PROXY_IDX] = address(new ColdPath());
         proxyPaths_[ZenonSlots.LONG_PROXY_IDX] = address(new LongPath());
         proxyPaths_[ZenonSlots.MICRO_PROXY_IDX] = address(new MicroPaths());

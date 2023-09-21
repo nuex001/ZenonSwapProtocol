@@ -41,7 +41,7 @@ contract HotPath is MarketSequencer, SettleLayer, ProtocolAccount {
         require(base != address(0), "Invalid base address");
         require(quote != address(0), "Invalid quote address");
         require(qty > 0, "Quantity muust be greater than zero");
-        require(LimitPrice > 0, "LimitPrice must be greater than zero");
+        require(limitPrice > 0, "LimitPrice must be greater than zero");
 
         
         PoolSpecs.PoolCursor memory pool = preparePoolCntx

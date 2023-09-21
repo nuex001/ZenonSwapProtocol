@@ -1,9 +1,9 @@
-/* Installs the major sidecar proxy contracts to CrocSwapDex through CrocPolicy
+/* Installs the major sidecar proxy contracts to ZenonSwapDex through ZenonPolicy
  * calls. */
 
 import { inflateAddr, initChain, refContract, traceContractTx, traceTxResp } from '../../libs/chain';
 import { AbiCoder } from '@ethersproject/abi';
-import { CrocPolicy, ERC20, TimelockAccepts } from '../../../typechain';
+import { ZenonPolicy, ERC20, TimelockAccepts } from '../../../typechain';
 import { BOOT_PROXY_IDX, LP_PROXY_IDX, TOKEN_ADDRS } from '../../constants/addrs';
 import { BigNumber, BytesLike, ethers } from 'ethers';
 import { MockERC20 } from '../../../contracts/typechain';
@@ -15,10 +15,10 @@ let cmd
 async function install() {
     let { addrs, chainId, wallet: authority } = initChain()
 
-    let policy = (await refContract("CrocPolicy", addrs.policy, authority)) as CrocPolicy
+    let policy = (await refContract("ZenonPolicy", addrs.policy, authority)) as ZenonPolicy
     await traceContractTx(policy.transferGovernance(addrs.govern.timelockOps, 
         addrs.govern.timelockTreasury, addrs.govern.timelockEmergency),
-        "Transfer CrocPolicy to Timelocks")
+        "Transfer ZenonPolicy to Timelocks")
 }
 
 install()

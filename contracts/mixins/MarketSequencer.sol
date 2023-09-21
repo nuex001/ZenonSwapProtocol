@@ -83,7 +83,7 @@ contract MarketSequencer is TradeMatcher {
      *                 price falls outside this point, the transaction is reverted.
      * @param maxPrice The maximum acceptable curve price to mint liquidity. If curve
      *                 price falls outside this point, the transaction is reverted.
-     * @param lpConduit The address of the ICrocLpConduit that the liquidity will be
+     * @param lpConduit The address of the IZenonLpConduit that the liquidity will be
      *                  assigned to (0 for user owned liquidity).
      *
      * @return baseFlow The total amount of base-side token collateral that must be
@@ -174,7 +174,7 @@ contract MarketSequencer is TradeMatcher {
      *                 price falls outside this point, the transaction is reverted.
      * @param maxPrice The maximum acceptable curve price to mint liquidity. If curve
      *                 price falls outside this point, the transaction is reverted.
-     * @param lpConduit The address of the ICrocLpConduit that the liquidity will be
+     * @param lpConduit The address of the IZenonLpConduit that the liquidity will be
      *                  assigned to (0 for user owned liquidity).
      *
      * @return baseFlow The total amount of base-side token collateral that must be

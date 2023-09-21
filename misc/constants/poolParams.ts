@@ -1,24 +1,24 @@
 import { BigNumberish } from "ethers"
 import { ethers } from "hardhat"
 
-export interface CrocOnePoolParams {
+export interface ZenonOnePoolParams {
     jitThresh: number,
     tickSize: number
     feeBps: number,
     knockoutOn: boolean
 }
 
-export interface CrocCrossPoolParams {
+export interface ZenonCrossPoolParams {
     initLiq: BigNumberish
 }
 
-export interface CrocPoolParams {
-    universal: CrocCrossPoolParams
+export interface ZenonPoolParams {
+    universal: ZenonCrossPoolParams
     stdPoolIdx: number
-    stdPoolParams: CrocOnePoolParams
+    stdPoolParams: ZenonOnePoolParams
 }
 
-const mainnetParams: CrocPoolParams = {
+const mainnetParams: ZenonPoolParams = {
     universal: {
         initLiq: 10000
     },
@@ -33,7 +33,7 @@ const mainnetParams: CrocPoolParams = {
 
 const goerliDryRunParams = mainnetParams
 
-export const CROC_POOL_PARAMS = {
+export const Zenon_POOL_PARAMS = {
     '0x1': mainnetParams,
     '0x5': goerliDryRunParams,
 }

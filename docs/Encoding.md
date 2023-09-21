@@ -1,7 +1,7 @@
 # Encoding Long Form Orders
 
-To optimize gas, long-form CrocSwap calls rely on Solidity ABI encoding for primitive types but encode at fixed positions instead of using Solidity ABI array encoding. Clients calling these functions must directly encode a byte string
-based on specification described here. CrocSwap will also make available a TypeScript based SDK to support client-side encoding.
+To optimize gas, long-form ZenonSwap calls rely on Solidity ABI encoding for primitive types but encode at fixed positions instead of using Solidity ABI array encoding. Clients calling these functions must directly encode a byte string
+based on specification described here. ZenonSwap will also make available a TypeScript based SDK to support client-side encoding.
 
 The input argument for long-form orders is a binary encoding, with several nested variable length array fields. Each array field is preceded by a count field that
 must allign with the number of elements in the array. The nested structure is visualized below. 
@@ -48,7 +48,7 @@ Describes the settlement directive from both the opening of the top-layer order 
 ### Swap Directive
 ![Swap directive](assets/Swap.jpg)
 * Flags: Bit flag field with two flags:
-    * Is Buy: Indicates swap will convert base-side token to quote-side token. (By convention CrocSwap internally always defines the base side as the token with the lexically smaller address in the pair.)
+    * Is Buy: Indicates swap will convert base-side token to quote-side token. (By convention ZenonSwap internally always defines the base side as the token with the lexically smaller address in the pair.)
     * In Base Qty: The quantity field of the swa is denominated in the pair's base-side token.
 * Roll Type: A numeric code indicating how to apply (if any) an offset based on a previously accumulated rolling quantity in the long form order.
 * Qty: The quantity to swap (final result could be smaller if swap hits the limit price).
@@ -68,7 +68,7 @@ Describes the range directive that defines a single concentrated liquidity range
 ### Price Improve Flags
 ![Price Improve](assets/PriceImprove.jpg)
 * Is Enabled: If true the user is requesting off-grid price improvement. (Normally disabled unless used to save on gas.)
-* Use base side: If enabled the user is requesting that price improve collateral threshold is based on the base-side token in the pair. (Be aware by convention CrocSwap internally always defines the base side as the token with the lexically smaller address in the pair.)
+* Use base side: If enabled the user is requesting that price improve collateral threshold is based on the base-side token in the pair. (Be aware by convention ZenonSwap internally always defines the base side as the token with the lexically smaller address in the pair.)
 
 ### Chaining Flags
 ![Chaining](assets/Chaining.jpg)

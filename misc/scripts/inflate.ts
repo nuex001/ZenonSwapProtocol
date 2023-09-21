@@ -1,12 +1,12 @@
 
-import { CrocSwapDexSeed } from '../../typechain/CrocSwapDexSeed';
+import { ZenonSwapDexSeed } from '../../typechain/ZenonSwapDexSeed';
 import { ethers } from 'hardhat';
 import { ContractFactory, BytesLike, BigNumber, Signer, ContractTransaction } from 'ethers';
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { toSqrtPrice, fromSqrtPrice, maxSqrtPrice } from '../../test/FixedPoint';
 import { MockBypassERC20 } from '../../typechain/MockBypassERC20';
 import { QueryHelper } from '../../typechain/QueryHelper';
-import { CrocSwapDex } from '../../contracts/typechain/CrocSwapDex';
+import { ZenonSwapDex } from '../../contracts/typechain/ZenonSwapDex';
 import { minSqrtPrice } from './tmpSwap';
 import { addrLessThan } from '../../test/FacadePool';
 
@@ -50,7 +50,7 @@ async function fundToken (token: MockBypassERC20, trader: Signer, dex: string): 
     console.log(await token.symbol() + " funded")
 }
 
-async function createPool (token: MockBypassERC20, base: MockBypassERC20, price: number, dex: CrocSwapDex): Promise<void> {
+async function createPool (token: MockBypassERC20, base: MockBypassERC20, price: number, dex: ZenonSwapDex): Promise<void> {
     let baseDecs = await base.decimals()
     let quoteDecs = await token.decimals()
     let deflator = Math.pow(10, baseDecs-quoteDecs)
@@ -65,7 +65,7 @@ async function createPool (token: MockBypassERC20, base: MockBypassERC20, price:
     }
 }
 
-async function mintLiq (token: MockBypassERC20, base: MockBypassERC20, dex: CrocSwapDex, query: QueryHelper): Promise<void> {
+async function mintLiq (token: MockBypassERC20, base: MockBypassERC20, dex: ZenonSwapDex, query: QueryHelper): Promise<void> {
     let baseDecs = await base.decimals()
     let quoteDecs = await token.decimals()
 
@@ -90,11 +90,11 @@ async function displayPrice (token: MockBypassERC20, base: MockBypassERC20, quer
     let quoteDecs = await token.decimals()
     let deflator = Math.pow(10, baseDecs-quoteDecs)
 
-    let crocPrice = (addrLessThan(base.address, token.address)) ?
+    let ZenonPrice = (addrLessThan(base.address, token.address)) ?
         parseFloat((await query.queryPrice(base.address, token.address, POOL_IDX)).toString()) :
         parseFloat((await query.queryPrice(token.address, base.address, POOL_IDX)).toString())
         
-    let divPrice = (crocPrice / Math.pow(2, 64)) * (crocPrice / Math.pow(2, 64))
+    let divPrice = (ZenonPrice / Math.pow(2, 64)) * (ZenonPrice / Math.pow(2, 64))
     if (!addrLessThan(base.address, token.address)) {
         divPrice = 1.0 / divPrice
     }
@@ -114,9 +114,9 @@ async function inflate() {
     console.log("Liquidity Provider: ", await lp.address)
     console.log("Trader: ", await trader.address)    
 
-    let factory = await ethers.getContractFactory("CrocSwapDex");
-    //let dex = factory.attach("0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9") as CrocSwapDex
-    let dex = factory.attach("0x6c40E8A335bF5956DeBD2FB88D5c98Cc0A760559") as CrocSwapDex
+    let factory = await ethers.getContractFactory("ZenonSwapDex");
+    //let dex = factory.attach("0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9") as ZenonSwapDex
+    let dex = factory.attach("0x6c40E8A335bF5956DeBD2FB88D5c98Cc0A760559") as ZenonSwapDex
 
     factory = await ethers.getContractFactory("QueryHelper");
     //let query = factory.attach("0xa513E6E4b8f2a923D98304ec87F64353C4D5C853") as QueryHelper

@@ -6,7 +6,7 @@ import './SafeCast.sol';
 
 /* @title Protocol Command library.
  *
- * @notice To allow for flexibility and upgradeability the top-level interface to the Croc
+ * @notice To allow for flexibility and upgradeability the top-level interface to the Zenon
  *         dex contract contains a general purpose encoding scheme. User commands specify a
  *         proxy contract index, and input is passed raw and unformatted. Each proxy contract
  *         is free to specify its own input format, but by convention many proxy contracts
@@ -19,9 +19,9 @@ library ProtocolCmd {
     ////////////////////////////////////////////////////////////////////////////
     // Privileged commands invokable by direct governance only.
     ////////////////////////////////////////////////////////////////////////////
-    // Code for transferring authority in the underlying CrocSwapDex contract.
+    // Code for transferring authority in the underlying ZenonSwapDex contract.
     uint8 constant AUTHORITY_TRANSFER_CODE = 20;
-    // Code to upgrade one of the sidecar proxy contracts on CrocSwapDex.
+    // Code to upgrade one of the sidecar proxy contracts on ZenonSwapDex.
     uint8 constant UPGRADE_DEX_CODE = 21;
     // Code to force hot path to use the proxy contract
     uint8 constant HOT_OPEN_CODE = 22;

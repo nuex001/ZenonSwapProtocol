@@ -1,7 +1,7 @@
 import { ethers } from "hardhat"
 
 // Convention is to use empty string for pre-deployed contract
-export interface CrocAddrs {
+export interface ZenonAddrs {
     dex: string,
     cold: string,
     warm: string,
@@ -16,10 +16,10 @@ export interface CrocAddrs {
     shell: string,
     policyShell: string,
     deployer: string,
-    govern: CrocGovAddrs
+    govern: ZenonGovAddrs
 }
 
-export interface CrocGovAddrs {
+export interface ZenonGovAddrs {
     multisigTreasury: string,
     multisigOps: string,
     multisigEmergency: string,
@@ -28,7 +28,7 @@ export interface CrocGovAddrs {
     timelockEmergency: string,
 }
 
-const emptryGovAddrs: CrocGovAddrs = {
+const emptryGovAddrs: ZenonGovAddrs = {
     multisigTreasury: "",
     multisigOps: "",
     multisigEmergency: "",
@@ -37,7 +37,7 @@ const emptryGovAddrs: CrocGovAddrs = {
     timelockEmergency: "",
 }
 
-const emptyAddrs: CrocAddrs = {
+const emptyAddrs: ZenonAddrs = {
     dex: "",
     cold: "",
     warm: "",
@@ -56,7 +56,7 @@ const emptyAddrs: CrocAddrs = {
 }
 
 // Mock used in local forks
-const mockAddrs: CrocAddrs = {
+const mockAddrs: ZenonAddrs = {
     dex: '0xAAAAaAAa7A116286168fe3733f994062bc73CbF3',
     cold: '0xC469e7aE4aD962c30c7111dc580B4adbc7E914DD',
     warm: '',
@@ -75,7 +75,7 @@ const mockAddrs: CrocAddrs = {
 }
 
 // Mainnet
-const mainnetAddrs: CrocAddrs = {
+const mainnetAddrs: ZenonAddrs = {
   dex: '0xAaAaAAAaA24eEeb8d57D431224f73832bC34f688',
   cold: '0xF8fe6fA0D9c778F8d814c838758B57a9Cf1dD710',
   warm: '0xd268767BE4597151Ce2BB4a70A9E368ff26cB195',
@@ -102,7 +102,7 @@ const mainnetAddrs: CrocAddrs = {
 
 
 // Goerli
-/* const goerliAddrs: CrocAddrs = {
+/* const goerliAddrs: ZenonAddrs = {
     dex: "0xfafcd1f5530827e7398b6d3c509f450b1b24a209",
     cold: "0xb2ae163293c82dcf36b0ce704591edc2f9e2608d",
     warm: "0x01B180D35125D31B4057d9ac7F46687dA1cAEFab",
@@ -120,7 +120,7 @@ const mainnetAddrs: CrocAddrs = {
     govern: emptryGovAddrs
 }*/ 
 
-const goerliAddrsDryRun: CrocAddrs = {
+const goerliAddrsDryRun: ZenonAddrs = {
     dex: '0xAaAaAAAaA24eEeb8d57D431224f73832bC34f688',
     cold: '0x0b6CD0ECb176cb39Ad99B3A0E4294167a80B68a3',
     warm: '0xd268767BE4597151Ce2BB4a70A9E368ff26cB195',
@@ -147,7 +147,7 @@ const goerliAddrsDryRun: CrocAddrs = {
 
     
 
-export let CROC_ADDRS = {
+export let Zenon_ADDRS = {
     '0x1': mainnetAddrs,
     '0x5': goerliAddrsDryRun,
     'mock': mockAddrs,

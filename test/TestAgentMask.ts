@@ -97,14 +97,14 @@ describe('AgentMask', () => {
         let tip = "0x6492"
 
         const domain = {
-            name: "CrocSwap",
+            name: "ZenonSwap",
             version: "1.0",
             chainId: 31337,
             verifyingContract: agent.address
         }
 
         const types = {
-            CrocRelayerCall: [
+            ZenonRelayerCall: [
                 { name: "callpath", type: "uint8"},
                 { name: "cmd", type: "bytes" },
                 { name: "conds", type: "bytes" },

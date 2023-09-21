@@ -2,7 +2,7 @@ import { solidity } from "ethereum-waffle";
 import "@nomiclabs/hardhat-ethers";
 import { ethers } from 'hardhat';
 import { Signer } from "ethers";
-import { CrocSwapDex } from "../typechain";
+import { ZenonSwapDex } from "../typechain";
 import { AbiCoder } from "@ethersproject/abi";
 
 export const BOOT_PROXY_IDX = 0;
@@ -15,11 +15,11 @@ export const KNOCKOUT_LP_PROXY_IDX = 7;
 export const FLAG_CROSS_PROXY_IDX = 3500;
 export const SAFE_MODE_PROXY_PATH = 9999;
 
-export async function buildCrocSwapSex (auth: Promise<Signer>): Promise<CrocSwapDex> {
+export async function buildZenonSwapSex (auth: Promise<Signer>): Promise<ZenonSwapDex> {
     const abi = new AbiCoder()
 
-    let factory = await ethers.getContractFactory("CrocSwapDex")
-    let dex = await factory.connect(await auth).deploy() as CrocSwapDex
+    let factory = await ethers.getContractFactory("ZenonSwapDex")
+    let dex = await factory.connect(await auth).deploy() as ZenonSwapDex
 
     factory = await ethers.getContractFactory("ColdPath")
     let proxy = await factory.deploy()

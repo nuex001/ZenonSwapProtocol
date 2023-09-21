@@ -42,7 +42,7 @@ contract QueryHelper {
     function querySurplus (address owner, address token)
         public view returns (uint128 surplus) {
         bytes32 key = keccak256(abi.encode(owner, token));
-        bytes32 slot = keccak256(abi.encode(key, CrocSlots.BAL_MAP_SLOT));
+        bytes32 slot = keccak256(abi.encode(key, ZenonSlots.BAL_MAP_SLOT));
         uint256 val = ZenonSwapDex(dex_).readSlot(uint256(slot));
         surplus = uint128((val << 128) >> 128);
     }

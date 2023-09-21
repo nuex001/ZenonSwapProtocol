@@ -2,9 +2,9 @@
 
 pragma solidity 0.8.19;
 
-import "../interfaces/ICrocMinion.sol";
+import "../interfaces/IZenonMinion.sol";
 
-contract MockMinion is ICrocMinion {
+contract MockMinion is IZenonMinion {
 
     bytes[] public userCmds_;
     bytes[] public protoCmds_;
@@ -28,10 +28,10 @@ contract MockMinion is ICrocMinion {
         return abi.encode();
     }
 
-    function acceptCrocDex() public pure returns (bool) { return true; }
+    function acceptZenonDex() public pure returns (bool) { return true; }
 }
 
-contract MockMaster is ICrocMaster {
+contract MockMaster is IZenonMaster {
 
     address dex_;
 
@@ -40,8 +40,8 @@ contract MockMaster is ICrocMaster {
     }
 
     function protocolCmd (uint16 proxyPath, bytes calldata cmd, bool sudo) public payable {
-        ICrocMinion(dex_).protocolCmd(proxyPath, cmd, sudo);
+        IZenonMinion(dex_).protocolCmd(proxyPath, cmd, sudo);
     }
 
-    function acceptsCrocAuthority() override external pure returns (bool) { return true; }
+    function acceptsZenonAuthority() override external pure returns (bool) { return true; }
 }

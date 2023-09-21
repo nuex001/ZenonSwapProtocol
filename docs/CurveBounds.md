@@ -1,6 +1,6 @@
 # Liquidity Curve Boundaries
 
-Because all liquidity curves are represented by a struct representing price, liquidity, and fee accumulation there are intrinsic limits to what can be represented in CrocSwap pool's liquidity curve. In almost all cases these bounds are far outside the economic limits of any major token pair's market, but developers and users should be aware of where the limits exist and what constraints they impose.
+Because all liquidity curves are represented by a struct representing price, liquidity, and fee accumulation there are intrinsic limits to what can be represented in ZenonSwap pool's liquidity curve. In almost all cases these bounds are far outside the economic limits of any major token pair's market, but developers and users should be aware of where the limits exist and what constraints they impose.
 
 ## Price
 

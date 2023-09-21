@@ -18,19 +18,19 @@ library CurveMath {
     using SafeCast for uint256;
     using SafeCast for uint192;
 
-    /* All CrocSwap swaps occur as legs across locally stable constant-product AMM
+    /* All ZenonSwap swaps occur as legs across locally stable constant-product AMM
      * curves. For large moves across tick boundaries, the state of this curve might 
      * change as range-bound liquidity is kicked in or out of the currently active 
      * curve. But for small moves within tick boundaries (or between tick boundaries 
      * with no liquidity bumps), the curve behaves like a classic constant-product AMM.
      *
-     * CrocSwap tracks two types of liquidity. 1) Ambient liquidity that is non-
+     * ZenonSwap tracks two types of liquidity. 1) Ambient liquidity that is non-
      * range bound and remains active at all prices from zero to infinity, until 
      * removed by the staking user. 2) Concentrated liquidity that is tied to an 
      * arbitrary lower<->upper tick range and is kicked out of the curve when the
      * price moves out of range.
      *
-     * In the CrocSwap model all collected fees are directly incorporated as expanded
+     * In the ZenonSwap model all collected fees are directly incorporated as expanded
      * liquidity onto the curve itself. (See CurveAssimilate.sol for more on the 
      * mechanics.) All accumulated fees are added as ambient-type liquidity, even those
      * fees that belong to the pro-rata share of the active concentrated liquidity.

@@ -114,58 +114,58 @@ contract ZenonPolicy is IZenonMaster {
     }
 
     /* @notice Resolution from the ops authority which calls protocolCmd() on the 
-     *         underlying CrocSwapDex contract. 
+     *         underlying ZenonSwapDex contract. 
      *
-     * @param minion The address of the underlying CrocSwapDex contract the command is
+     * @param minion The address of the underlying ZenonSwapDex contract the command is
      *               called on.
      * @param proxyPath The proxy sidecar index the policy calls
      * @param cmd    The content of the command passed to the protocolCmd() method. */
     function opsResolution (address minion, uint16 proxyPath,
                             bytes calldata cmd) opsAuth public {
-        emit CrocResolutionOps(minion, cmd);
-        ICrocMinion(minion).protocolCmd(proxyPath, cmd, false);
+        emit ZenonResolutionOps(minion, cmd);
+        IZenonMinion(minion).protocolCmd(proxyPath, cmd, false);
     }
 
     /* @notice Resolution from the treasury authority which calls protocolCmd() on the 
-     *         underlying CrocSwapDex contract. 
+     *         underlying ZenonSwapDex contract. 
      *
-     * @param minion The address of the underlying CrocSwapDex contract the command is
+     * @param minion The address of the underlying ZenonSwapDex contract the command is
      *               called on.
      * @param proxyPath The proxy sidecar index the policy calls
-     * @param sudo   If true, runs the call on CrocSwapDex with elevated privilege
+     * @param sudo   If true, runs the call on ZenonSwapDex with elevated privilege
      * @param cmd    The content of the command passed to the protocolCmd() method. */
     function treasuryResolution (address minion, uint16 proxyPath,
                                  bytes calldata cmd, bool sudo)
         treasuryAuth public {
-        emit CrocResolutionTreasury(minion, sudo, cmd);
-        ICrocMinion(minion).protocolCmd(proxyPath, cmd, sudo);
+        emit ZenonResolutionTreasury(minion, sudo, cmd);
+        IZenonMinion(minion).protocolCmd(proxyPath, cmd, sudo);
     }
 
-    /* @notice An out-of-band emergency measure to protect funds in the CrocSwapDex 
+    /* @notice An out-of-band emergency measure to protect funds in the ZenonSwapDex 
      *         contract in case of a security issue. It works by disabling all the proxy
-     *         contracts in CrocSwapDex (and disabling swap()'s in the hotpath), besides
+     *         contracts in ZenonSwapDex (and disabling swap()'s in the hotpath), besides
      *         the "warm path" proxy. The warm path only includes functionality for flat
      *         mint, burn and harvest calls. An emergency halt would therefore allow LPs
      *         to withdraw their at-rest capital, while reducing the attack radius by 
      *         disabling swaps and more complex long-form orders.
      *
-     * @param minion The address of the underlying CrocSwapDex contract.
+     * @param minion The address of the underlying ZenonSwapDex contract.
      * @param reason The stated reason for invoking the emergency policy update with 
      *               details. */
     function emergencyHalt (address minion, string calldata reason)
         emergencyAuth public {
-        emit CrocEmergencyHalt(minion, reason);
+        emit ZenonEmergencyHalt(minion, reason);
 
         bytes memory cmd = ProtocolCmd.encodeHotPath(false);
-        ICrocMinion(minion).protocolCmd(CrocSlots.COLD_PROXY_IDX, cmd, true);
+        IZenonMinion(minion).protocolCmd(ZenonSlots.COLD_PROXY_IDX, cmd, true);
         
         cmd = ProtocolCmd.encodeSafeMode(true);
-        ICrocMinion(minion).protocolCmd(CrocSlots.COLD_PROXY_IDX, cmd, true);
+        IZenonMinion(minion).protocolCmd(ZenonSlots.COLD_PROXY_IDX, cmd, true);
     }
 
-    /* @notice Croc policy rules are set on a per address basis. Each address 
+    /* @notice Zenon policy rules are set on a per address basis. Each address 
      *         corresponds to a smart contract, which is authorized to invoke one or 
-     *         more protocol commands on the underlying CrocSwapDex contract. 
+     *         more protocol commands on the underlying ZenonSwapDex contract. 
      * 
      * @param cmdFlags_ A vector of boolean flags. true entry at index X indicates
      *                  that the policy conduit is authorized to invoke protocol
@@ -190,18 +190,18 @@ contract ZenonPolicy is IZenonMaster {
     mapping(bytes32 => PolicyRule) public rules_;
 
     /* @notice Called by policy oracle to invoke protocolCmd on the underlying 
-     *         CrocSwapDex. Authority for the specific protocol command is checked 
+     *         ZenonSwapDex. Authority for the specific protocol command is checked 
      *         against the policy rule (if any) for the conduit oracle's address in the 
      *         policy rules set.
      *
-     * @param minion The address of the underlying CrocSwapDex contract
+     * @param minion The address of the underlying ZenonSwapDex contract
      * @param proxyPath The proxy sidecar index for the policy being invoked
      * @param cmd    The content of the command passed to protocolCmd() */
     function invokePolicy (address minion, uint16 proxyPath, bytes calldata cmd) public {
         bytes32 ruleKey = keccak256(abi.encode(msg.sender, proxyPath));
         PolicyRule memory policy = rules_[ruleKey];
         require(passesPolicy(policy, cmd), "Policy authority");
-        ICrocMinion(minion).protocolCmd(proxyPath, cmd, false);
+        IZenonMinion(minion).protocolCmd(proxyPath, cmd, false);
     }
 
     /* @notice Called by ops authority to set or update a new policy rules. The only
@@ -221,7 +221,7 @@ contract ZenonPolicy is IZenonMaster {
         require(isLegal(prev, policy), "Illegal policy update");
 
         rules_[key] = policy;
-        emit CrocPolicySet(conduit, proxyPath, policy);
+        emit ZenonPolicySet(conduit, proxyPath, policy);
     }
 
     function rulesKey (address conduit, uint16 proxyPath)
@@ -241,7 +241,7 @@ contract ZenonPolicy is IZenonMaster {
         treasuryAuth public {
         bytes32 key = rulesKey(conduit, proxyPath);
         rules_[key] = policy;
-        emit CrocPolicyForce(conduit, proxyPath, policy);
+        emit ZenonPolicyForce(conduit, proxyPath, policy);
     }
 
     /* @notice Called by emergency authority to set or update a new policy rules. Only
@@ -258,7 +258,7 @@ contract ZenonPolicy is IZenonMaster {
         rules_[key].cmdFlags_ = bytes32(0);
         rules_[key].mandateTime_ = 0;
         rules_[key].expiryOffset_ = 0;
-        emit CrocPolicyEmergency(conduit, reason);
+        emit ZenonPolicyEmergency(conduit, reason);
     }
 
     /* @notice Determines if the Policy transition for this conduit is legal given the
@@ -292,7 +292,7 @@ contract ZenonPolicy is IZenonMaster {
     /* @notice Determines if the proposed protocolCmd conforms to an existing policy.
      * @param policy The current policy in place for the conduit invoking the command
      * @param protocolCmd The proposed command to be invoked on the underlying 
-     *                    CrocSwapDex contract.
+     *                    ZenonSwapDex contract.
      * @return Returns true if the proposed protocolCmd message is authorized by the 
      *         policy object. */
     function passesPolicy (PolicyRule memory policy, bytes calldata protocolCmd)
@@ -314,7 +314,7 @@ contract ZenonPolicy is IZenonMaster {
         return (bytes32(uint256(1)) << flagIdx) & cmdFlags > 0;         
     }
 
-    function acceptsCrocAuthority() public override pure returns (bool) { return true; }
+    function acceptsZenonAuthority() public override pure returns (bool) { return true; }
 
     /* @notice Permissions gate for normal day-to-day operations. */
     modifier opsAuth() {

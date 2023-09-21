@@ -7,7 +7,7 @@ import "hardhat/console.sol";
 
 contract MockTimelock {
 
-    address public policy_;ss
+    address public policy_;
 
     constructor (address policy) {
         policy_ = policy;

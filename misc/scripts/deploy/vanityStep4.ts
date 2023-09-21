@@ -29,13 +29,13 @@ async function install() {
     addrs.warm = (await inflateAddr("WarmPath", addrs.warm, authority)).address
     console.log(addrs)
 
-    addrs.policy = (await inflateAddr("CrocPolicy", addrs.policy, authority, addrs.dex)).address
+    addrs.policy = (await inflateAddr("ZenonPolicy", addrs.policy, authority, addrs.dex)).address
     console.log(addrs)
 
-    addrs.query = (await inflateAddr("CrocQuery", addrs.query, authority, addrs.dex)).address
+    addrs.query = (await inflateAddr("ZenonQuery", addrs.query, authority, addrs.dex)).address
     console.log(addrs)
 
-    addrs.impact = (await inflateAddr("CrocImpact", addrs.impact, authority, addrs.dex)).address
+    addrs.impact = (await inflateAddr("ZenonImpact", addrs.impact, authority, addrs.dex)).address
     console.log(addrs)
 
 }

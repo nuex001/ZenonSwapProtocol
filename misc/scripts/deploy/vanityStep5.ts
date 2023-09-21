@@ -1,7 +1,7 @@
-/* Installs the major sidecar proxy contracts to CrocSwapDex through CrocPolicy
+/* Installs the major sidecar proxy contracts to ZenonSwapDex through ZenonPolicy
  * calls. */
 
-import { ColdPath, CrocPolicy, CrocSwapDex } from '../../../typechain';
+import { ColdPath, ZenonPolicy, ZenonSwapDex } from '../../../typechain';
 import { BOOT_PROXY_IDX, FLAG_CROSS_PROXY_IDX, KNOCKOUT_LP_PROXY_IDX, LONG_PROXY_IDX, LP_PROXY_IDX, MICRO_PROXY_IDX, SWAP_PROXY_IDX } from '../../constants/addrs';
 import { inflateAddr, initChain, refContract, traceContractTx, traceTxResp } from '../../libs/chain';
 import { AbiCoder } from '@ethersproject/abi';
@@ -12,7 +12,7 @@ let cmd
 async function install() {
     let { addrs, chainId, wallet: authority } = initChain()
 
-    let policy = (await inflateAddr("CrocPolicy", addrs.policy, authority)) as CrocPolicy
+    let policy = (await inflateAddr("ZenonPolicy", addrs.policy, authority)) as ZenonPolicy
 
     cmd = abi.encode(["uint8", "address", "uint16"], [21, addrs.long, LONG_PROXY_IDX])
     await traceContractTx(policy.treasuryResolution(

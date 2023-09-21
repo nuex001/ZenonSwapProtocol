@@ -6,17 +6,17 @@ import { toSqrtPrice, fromSqrtPrice, maxSqrtPrice, minSqrtPrice, ZERO_ADDR } fro
 import { solidity } from "ethereum-waffle";
 import chai from "chai";
 import { MockERC20 } from '../typechain/MockERC20';
-import { CrocQuery } from '../typechain';
+import { ZenonQuery } from '../typechain';
 
 chai.use(solidity);
 
-describe('CrocQuery', () => {
+describe('ZenonQuery', () => {
     let test: TestPool
     let baseToken: Token
     let quoteToken: Token
     const feeRate = 225 * 100
     let trader: string
-    let query: CrocQuery
+    let query: ZenonQuery
 
     beforeEach("deploy",  async () => {
        test = await makeTokenPool()

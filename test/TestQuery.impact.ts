@@ -7,13 +7,13 @@ import { solidity } from "ethereum-waffle";
 import chai from "chai";
 import { MockERC20 } from '../typechain/MockERC20';
 import { BigNumber, BigNumberish } from 'ethers';
-import { CrocImpact } from '../typechain';
+import { ZenonImpact } from '../typechain';
 
 chai.use(solidity);
 
 describe('Query Impact', () => {
     let pool: TestPool
-    let test: CrocImpact
+    let test: ZenonImpact
     let baseToken: Token
     let quoteToken: Token
     const feeRate = 225 * 100
@@ -27,8 +27,8 @@ describe('Query Impact', () => {
        pool.liqQty = true
        await pool.initPool(feeRate, 0, 1, 1.5)
 
-       let factory = await ethers.getContractFactory("CrocImpact")
-       test = await factory.deploy((await pool.dex).address) as CrocImpact
+       let factory = await ethers.getContractFactory("ZenonImpact")
+       test = await factory.deploy((await pool.dex).address) as ZenonImpact
     })
 
     interface ImpactResult {
