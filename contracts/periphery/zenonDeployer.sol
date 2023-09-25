@@ -11,12 +11,16 @@ contract ZenonDeployer {
     address immutable owner_;
     address public dex_;
 
-    constructor (address owner) {
+    constructor(address owner) {
         owner_ = owner;
     }
 
-    function protocolCmd (address dex, uint16 proxyPath,
-                          bytes calldata cmd, bool sudo) public {
+    function protocolCmd(
+        address dex,
+        uint16 proxyPath,
+        bytes calldata cmd,
+        bool sudo
+    ) public {
         require(msg.sender == owner_, "Does not own deployer");
         ZenonSwapDex(dex).protocolCmd(proxyPath, cmd, sudo);
     }
@@ -26,20 +30,31 @@ contract ZenonDeployer {
         uint _salt
     ) public view returns (address) {
         bytes32 hash = keccak256(
-            abi.encodePacked(bytes1(0xff), address(this), _salt, keccak256(bytecode))
+            abi.encodePacked(
+                bytes1(0xff),
+                address(this),
+                _salt,
+                keccak256(bytecode)
+            )
         );
 
         // NOTE: cast last 20 bytes of hash to address
         return address(uint160(uint(hash)));
     }
 
-    function deploy (bytes memory bytescode, uint salt) public returns (address) {
+    function deploy(
+        bytes memory bytescode,
+        uint salt
+    ) public returns (address) {
         dex_ = createContract(bytescode, salt);
         emit ZenonDeploy(dex_, salt);
         return dex_;
     }
 
-    function createContract(bytes memory bytecode, uint _salt) internal returns (address addr) {
+    function createContract(
+        bytes memory bytecode,
+        uint _salt
+    ) internal returns (address addr) {
         assembly {
             addr := create2(
                 0, // No payment to constructor
